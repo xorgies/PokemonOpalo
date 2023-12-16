@@ -31,5 +31,5 @@ def leerFicheroPokemon(ruta,nombreFichero,rutaJson):
                     valor = ""
                 pokemon[nombre]=valor
 
-    with open(rutaJson+ficheroJsonPokemon, "w") as write_file:
+    with open(rutaJson+ficheroJsonPokemon, "w",encoding='utf-8') as write_file:
         json.dump(datos, write_file, indent=4, sort_keys=True)
