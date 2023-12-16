@@ -1,0 +1,10 @@
+{% extends "pokedexApp/base.html" %}
+{% block title %}{{pokemon.name}}{% endblock title %}
+{% block content %}
+<h2>{{pokemon.name}}</h2>
+<p>Estadisticas: {{pokemon.baseStats}}</p>
+<p>Habilidades: {{pokemon.abilities}}</p>
+<p>Tipo Principal: {{pokemon.type1}}</p>
+<p>Tipo Secundario: {{pokemon.type2}}</p>
+<a href="{% url 'pokedex'%}"><button type="submit">Volver</button></a>
+{% endblock content%}

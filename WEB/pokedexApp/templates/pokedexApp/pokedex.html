@@ -1,0 +1,10 @@
+{% extends "pokedexApp/base.html" %}
+{% block title %}Pokedex{% endblock title %}
+{% block content %}
+
+    <h1>Pokemones</h1>
+    {% for pokemon in pokemones %}
+        <h2><a href="{% url 'detalles' pk=pokemon.pk %}">{{pokemon.name}}</a></h2>
+    {% endfor %}
+    
+{% endblock content %}

@@ -3,7 +3,7 @@ import json
 
 def crearTablas(conexion):
     try:
-        conexion.execute("""create table Pokemon (
+        conexion.execute("""create table pokedexApp_pokemon (
                                 id integer primary key,
                                 name text,
                                 genderRate text,
@@ -25,5 +25,5 @@ def rellenarPokemons(conexion):
     with open("JsonTransformer/json/pokemon.json") as file:
         data = json.load(file)
         for pokemon in data['pokemons']:
-            conexion.execute("insert into Pokemon(id,name,genderRate,growthRate,rareness,happiness,compatibility,stepsToHatch,height,weight,color,pokedex) values (?,?,?,?,?,?,?,?,?,?,?,?)", (pokemon['id'], pokemon['Name'], pokemon['GenderRate'],pokemon['GrowthRate'],pokemon['Rareness'],pokemon['Happiness'],pokemon['Compatibility'],pokemon['StepsToHatch'],pokemon['Height'],pokemon['Weight'],pokemon['Color'],pokemon['Pokedex']))
+            conexion.execute("insert into pokedexApp_pokemon(id,name,genderRate,growthRate,rareness,happiness,compatibility,stepsToHatch,height,weight,color,pokedex) values (?,?,?,?,?,?,?,?,?,?,?,?)", (pokemon['id'], pokemon['Name'], pokemon['GenderRate'],pokemon['GrowthRate'],pokemon['Rareness'],pokemon['Happiness'],pokemon['Compatibility'],pokemon['StepsToHatch'],pokemon['Height'],pokemon['Weight'],pokemon['Color'],pokemon['Pokedex']))
             conexion.commit()
