@@ -6,3 +6,6 @@ parte python que lee los txt y los transforma en json
 
 ## WEB
 parte python con flask para mostrar los datos de los json en una web
+
+# Primer uso
+Lanzar primeraCarga.bat para que se recuperen los datos de los txt y se cree la bd de sqlite que usará la web
