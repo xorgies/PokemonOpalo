@@ -7,6 +7,8 @@ nombreTablaHabilidadesPokemon="Pokemon_Habilidades"
 nombreTablaEstadisticasPokemon="Pokemon_Estadisticas"
 nombreTablaTipos="Tipos"
 nombreTablaTiposPokemon="Pokemon_Tipos"
+nombreTablaMovimientos="Movientos"
+nombreTablaMovimientosPokemon="Pokemon_Movimientos"
 
 def crearTablas(conexion):
     ##########################################
@@ -51,6 +53,16 @@ def crearTablas(conexion):
         print("Se creo la tabla Tipos")                        
     except sqlite3.OperationalError:
         print("La tabla Tipos ya existe")
+
+    # Movimientos                  
+    try:
+        conexion.execute(f"""create table {nombreTablaMovimientos} (
+                                id integer primary key,
+                                nombre text
+                            )""")
+        print("Se creo la tabla Movimientos")                        
+    except sqlite3.OperationalError:
+        print("La tabla Movimientos ya existe")
 
     ##########################################
     # tablas con relaciones
@@ -107,6 +119,23 @@ def crearTablas(conexion):
     except sqlite3.OperationalError:
         print("La tabla Pokemon_Tipos ya existe")
 
+    # Pokemon_Movimientos
+    try:
+        conexion.execute(f"""create table {nombreTablaMovimientosPokemon} (
+                                pokemon_id integer,
+                                movimiento_id integer,
+                                nivel_aprender text,
+                                CONSTRAINT fk_pokemon
+                                    FOREIGN KEY (pokemon_id)
+                                    REFERENCES {nombreTablaPokemon}(id),
+                                CONSTRAINT fk_movimiento
+                                    FOREIGN KEY (movimiento_id)
+                                    REFERENCES {nombreTablaMovimientos}(id)
+                            )""")
+        print("Se creo la tabla Pokemon_Movimientos")                        
+    except sqlite3.OperationalError:
+        print("La tabla Pokemon_Movimientos ya existe")
+
 def rellenarPokemons(conexion):
     with open("JsonTransformer/json/pokemon.json") as file:
         data = json.load(file)
@@ -162,6 +191,25 @@ def rellenarTipos(conexion):
         for tipo_pokemon in data['tipos']:
             try:
                 conexion.execute("insert into "+nombreTablaTiposPokemon+"(pokemon_id,tipo_id) values (?,?)", (tipo_pokemon['pokemon_id'],tipo_pokemon['tipo_id']))
+                conexion.commit()
+            except:
+                print("Ya existe la fila")
+
+def rellenarMovimientos(conexion):
+    with open("JsonTransformer/json/movimientos.json") as file:
+        data = json.load(file)
+        for (id, nombre) in data.items():
+            try:
+                conexion.execute("insert into "+nombreTablaMovimientos+"(id,nombre) values (?,?)", (id, nombre))
+                conexion.commit()
+            except:
+                print("Ya existe la fila")
+
+    with open("JsonTransformer/json/movimientos_pokemon.json") as file:
+        data = json.load(file)
+        for movimiento_pokemon in data['movimientos']:
+            try:
+                conexion.execute("insert into "+nombreTablaMovimientosPokemon+"(pokemon_id,movimiento_id,nivel_aprender) values (?,?,?)", (movimiento_pokemon['pokemon_id'],movimiento_pokemon['movimiento_id'],movimiento_pokemon['nivel_aprender']))
                 conexion.commit()
             except:
                 print("Ya existe la fila")

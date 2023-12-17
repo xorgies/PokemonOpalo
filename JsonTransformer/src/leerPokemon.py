@@ -7,6 +7,8 @@ ficheroJsonHabilidadesPokemon="habilidades_pokemon.json"
 ficheroJsonEstadisticasPokemon="estadisticas_pokemon.json"
 ficheroJsonTipos="tipos.json"
 ficheroJsonTiposPokemon="tipos_pokemon.json"
+ficheroJsonMovimientos="movimientos.json"
+ficheroJsonMovimientosPokemon="movimientos_pokemon.json"
 
 def leerFicheroPokemon(ruta,nombreFichero,rutaJson):
     datos = {}
@@ -15,8 +17,11 @@ def leerFicheroPokemon(ruta,nombreFichero,rutaJson):
     habilidades = {}
     habilidadesId = 1
 
-    tipos ={}
+    tipos = {}
     tiposId = 1
+
+    movimientos = {}
+    movimientosId = 1
 
     habilidades_pokemon = {}
     habilidades_pokemon['habilidades'] = []
@@ -26,6 +31,9 @@ def leerFicheroPokemon(ruta,nombreFichero,rutaJson):
 
     tipos_pokemon = {}
     tipos_pokemon['tipos'] = []
+
+    movimientos_pokemon = {}
+    movimientos_pokemon['movimientos'] = []
 
     with open(ruta+nombreFichero,'r',encoding='utf-8') as f:
         pokemon = {}
@@ -84,6 +92,17 @@ def leerFicheroPokemon(ruta,nombreFichero,rutaJson):
                     else:
                         tipoId = list(tipos.keys())[list(tipos.values()).index(valor)]
                     tipos_pokemon['tipos'].append({'pokemon_id':pokemon_id,'tipo_id':tipoId})
+                if 'Moves' == nombre:
+                    movimientosSplit = valor.split(',')
+                    for (nivel, movimiento) in convertirArrayMovimientos(movimientosSplit):
+                        movimientoId = -1
+                        if movimiento not in movimientos.values():
+                            movimientos[movimientosId] = movimiento
+                            movimientoId = movimientosId
+                            movimientosId = movimientosId + 1
+                        else:
+                            movimientoId = list(movimientos.keys())[list(movimientos.values()).index(movimiento)]
+                        movimientos_pokemon['movimientos'].append({'pokemon_id':pokemon_id,'movimiento_id':movimientoId,'nivel_aprender':int(nivel)})
                 elif 'BaseEXP' not in nombre and 'BattlerAltitude' not in nombre and 'BattlerEnemyY' not in nombre and 'BattlerPlayerY' not in nombre and 'EffortPoints' not in nombre:
                     pokemon[nombre]=valor
 
@@ -105,3 +124,24 @@ def leerFicheroPokemon(ruta,nombreFichero,rutaJson):
     with open(rutaJson+ficheroJsonTiposPokemon, "w",encoding='utf-8') as write_file:
         json.dump(tipos_pokemon, write_file, indent=4, sort_keys=True)
     
+    with open(rutaJson+ficheroJsonMovimientos, "w",encoding='utf-8') as write_file:
+        json.dump(movimientos, write_file, indent=4, sort_keys=True)
+    
+    with open(rutaJson+ficheroJsonMovimientosPokemon, "w",encoding='utf-8') as write_file:
+        json.dump(movimientos_pokemon, write_file, indent=4, sort_keys=True)
+    
+def convertirArrayMovimientos(array):
+    arrayNiveles=[]
+    arrayMovimientos=[]
+    arrayRespuesta=[]
+
+    for i in array[::2]:
+        arrayNiveles.append(i)
+
+    for i in array[1::2]:
+        arrayMovimientos.append(i)
+
+    for nivel, movimiento in zip(arrayNiveles, arrayMovimientos):
+        arrayRespuesta.append((nivel,movimiento))
+    
+    return arrayRespuesta

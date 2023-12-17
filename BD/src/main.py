@@ -4,6 +4,10 @@ import os
 
 rutaBD="WEB/DB/database.sqlite3"
 
+try:
+    os.remove(rutaBD)
+except OSError:
+    pass
 
 conexion=sqlite3.connect(rutaBD)
 
@@ -22,5 +26,8 @@ utils.rellenarEstadisticas(conexion)
 print("==============================")
 print("Rellenando tablas Tipos")
 utils.rellenarTipos(conexion)
+print("==============================")
+print("Rellenando tablas Movimientos")
+utils.rellenarMovimientos(conexion)
 
 conexion.close()
