@@ -9,6 +9,7 @@ nombreTablaTipos="Tipos"
 nombreTablaTiposPokemon="Pokemon_Tipos"
 nombreTablaMovimientos="Movientos"
 nombreTablaMovimientosPokemon="Pokemon_Movimientos"
+nombreTablaEvoluciones="Evoluciones"
 
 def crearTablas(conexion):
     ##########################################
@@ -136,6 +137,24 @@ def crearTablas(conexion):
     except sqlite3.OperationalError:
         print("La tabla Pokemon_Movimientos ya existe")
 
+    # Evoluciones
+    try:
+        conexion.execute(f"""create table {nombreTablaEvoluciones} (
+                                pokemon_id integer,
+                                pokemon_evolucion_id integer,
+                                forma text,
+                                descripcion text,
+                                CONSTRAINT fk_pokemon
+                                    FOREIGN KEY (pokemon_id)
+                                    REFERENCES {nombreTablaPokemon}(id),
+                                CONSTRAINT fk_pokemon_evolucion
+                                    FOREIGN KEY (pokemon_evolucion_id)
+                                    REFERENCES {nombreTablaPokemon}(id)
+                            )""")
+        print("Se creo la tabla Evoluciones")                        
+    except sqlite3.OperationalError:
+        print("La tabla Evoluciones ya existe")
+
 def rellenarPokemons(conexion):
     with open("JsonTransformer/json/pokemon.json") as file:
         data = json.load(file)
@@ -174,7 +193,7 @@ def rellenarEstadisticas(conexion):
                 conexion.execute("insert into "+nombreTablaEstadisticasPokemon+"(pokemon_id,ps,atk,def,spd,atk_sp,def_sp) values (?,?,?,?,?,?,?)", (estadisticas_pokemon['pokemon_id'],estadisticas_pokemon['ps'],estadisticas_pokemon['atk'],estadisticas_pokemon['def'],estadisticas_pokemon['spd'],estadisticas_pokemon['atk_sp'],estadisticas_pokemon['def_sp']))
                 conexion.commit()
             except:
-                print("Ya existe la fila insert into "+nombreTablaEstadisticasPokemon+"(pokemon_id,ps,atk,def,spd,atk_sp,def_sp) values (?,?,?,?,?,?,?)", (estadisticas_pokemon['pokemon_id'],estadisticas_pokemon['ps'],estadisticas_pokemon['atk'],estadisticas_pokemon['def'],estadisticas_pokemon['spd'],estadisticas_pokemon['atk_sp'],estadisticas_pokemon['def_sp']))
+                print("Ya existe la fila")
 
 def rellenarTipos(conexion):
     with open("JsonTransformer/json/tipos.json") as file:
@@ -210,6 +229,16 @@ def rellenarMovimientos(conexion):
         for movimiento_pokemon in data['movimientos']:
             try:
                 conexion.execute("insert into "+nombreTablaMovimientosPokemon+"(pokemon_id,movimiento_id,nivel_aprender) values (?,?,?)", (movimiento_pokemon['pokemon_id'],movimiento_pokemon['movimiento_id'],movimiento_pokemon['nivel_aprender']))
+                conexion.commit()
+            except:
+                print("Ya existe la fila")
+
+def rellenarEvoluciones(conexion):
+    with open("JsonTransformer/json/evoluciones_pokemon.json") as file:
+        data = json.load(file)
+        for evoluciones_pokemon in data['evoluciones']:
+            try:
+                conexion.execute("insert into "+nombreTablaEvoluciones+"(pokemon_id,pokemon_evolucion_id,forma,descripcion) values (?,?,?,?)", (evoluciones_pokemon['pokemon_id'],evoluciones_pokemon['pokemon_evolucion_id'],evoluciones_pokemon['forma'],evoluciones_pokemon['descripcion']))
                 conexion.commit()
             except:
                 print("Ya existe la fila")

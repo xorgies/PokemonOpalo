@@ -29,5 +29,8 @@ utils.rellenarTipos(conexion)
 print("==============================")
 print("Rellenando tablas Movimientos")
 utils.rellenarMovimientos(conexion)
+print("==============================")
+print("Rellenando tablas Evoluciones")
+utils.rellenarEvoluciones(conexion)
 
 conexion.close()

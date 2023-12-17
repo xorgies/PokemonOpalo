@@ -10,6 +10,7 @@ ficheroJsonTiposPokemon="tipos_pokemon.json"
 ficheroJsonMovimientos="movimientos.json"
 ficheroJsonMovimientosPokemon="movimientos_pokemon.json"
 ficheroJsonPokemonsId="pokemons_id.json"
+ficheroJsonEvolucionesPokemon="evoluciones_pokemon.json"
 
 def leerFicheroPokemon(ruta,nombreFichero,rutaJson):
     datos = {}
@@ -38,6 +39,9 @@ def leerFicheroPokemon(ruta,nombreFichero,rutaJson):
     movimientos_pokemon = {}
     movimientos_pokemon['movimientos'] = []
 
+    evoluciones_pokemon = {}
+    evoluciones_pokemon['evoluciones'] = []
+
     with open(ruta+nombreFichero,'r',encoding='utf-8') as f:
         pokemon = {}
 
@@ -63,7 +67,7 @@ def leerFicheroPokemon(ruta,nombreFichero,rutaJson):
                 else:
                     valor = ""
 
-                if 'Abilities' in nombre:
+                if 'Abilities' == nombre:
                     habilidadesSplit = valor.split(',')
                     for habilidad in habilidadesSplit:
                         habilidadId = -1
@@ -74,7 +78,7 @@ def leerFicheroPokemon(ruta,nombreFichero,rutaJson):
                         else:
                             habilidadId = list(habilidades.keys())[list(habilidades.values()).index(habilidad)]
                         habilidades_pokemon['habilidades'].append({'pokemon_id':pokemon_id,'habilidad_id':habilidadId,'tipo':'normal'})
-                elif 'HiddenAbility' in nombre:
+                elif 'HiddenAbility' == nombre:
                     if valor not in habilidades.values():
                         habilidades[habilidadesId] = valor
                         habilidadId = habilidadesId
@@ -82,10 +86,10 @@ def leerFicheroPokemon(ruta,nombreFichero,rutaJson):
                     else:
                         habilidadId = list(habilidades.keys())[list(habilidades.values()).index(valor)]
                     habilidades_pokemon['habilidades'].append({'pokemon_id':pokemon_id,'habilidad_id':habilidadId,'tipo':'oculta'})
-                elif 'BaseStats' in nombre:
+                elif 'BaseStats' == nombre:
                     baseStatsSplit = valor.split(',')
                     estadisticas_pokemon['estadisticas'].append({'pokemon_id':pokemon_id,'ps':baseStatsSplit[0],'atk':baseStatsSplit[1],'def':baseStatsSplit[2],'spd':baseStatsSplit[3],'atk_sp':baseStatsSplit[4],'def_sp':baseStatsSplit[5]})
-                elif 'Type1' in nombre or 'Type2' in nombre:
+                elif 'Type1' == nombre or 'Type2' == nombre:
                     tipoId = -1
                     if valor not in tipos.values():
                         tipos[tiposId] = valor
@@ -94,7 +98,7 @@ def leerFicheroPokemon(ruta,nombreFichero,rutaJson):
                     else:
                         tipoId = list(tipos.keys())[list(tipos.values()).index(valor)]
                     tipos_pokemon['tipos'].append({'pokemon_id':pokemon_id,'tipo_id':tipoId})
-                if 'Moves' == nombre:
+                elif 'Moves' == nombre:
                     movimientosSplit = valor.split(',')
                     for (nivel, movimiento) in convertirArrayMovimientos(movimientosSplit):
                         movimientoId = -1
@@ -105,8 +109,26 @@ def leerFicheroPokemon(ruta,nombreFichero,rutaJson):
                         else:
                             movimientoId = list(movimientos.keys())[list(movimientos.values()).index(movimiento)]
                         movimientos_pokemon['movimientos'].append({'pokemon_id':pokemon_id,'movimiento_id':movimientoId,'nivel_aprender':int(nivel)})
-                if 'InternalName' in nombre:
+                elif 'InternalName' == nombre:
                     pokemons[pokemon_id] = valor
+                elif 'Evolutions' == nombre:
+                    evolucionesSplit = valor.split(',')
+                    indiceAux = 1
+                    pokemonEvolucion = ''
+                    forma = ''
+                    descripcion = ''
+
+                    for valorAux in evolucionesSplit:
+                        if indiceAux == 1:
+                            pokemonEvolucion=valorAux
+                            indiceAux += 1
+                        elif indiceAux == 2:
+                            forma=valorAux
+                            indiceAux += 1
+                        elif indiceAux == 3:
+                            descripcion=valorAux
+                            evoluciones_pokemon['evoluciones'].append({'pokemon_id':pokemon_id,'pokemon_evolucion':pokemonEvolucion,'forma':forma,'descripcion':descripcion})
+                            indiceAux = 0
                 elif 'BaseEXP' not in nombre and 'BattlerAltitude' not in nombre and 'BattlerEnemyY' not in nombre and 'BattlerPlayerY' not in nombre and 'EffortPoints' not in nombre:
                     pokemon[nombre]=valor
 
@@ -136,6 +158,10 @@ def leerFicheroPokemon(ruta,nombreFichero,rutaJson):
 
     with open(rutaJson+ficheroJsonPokemonsId, "w",encoding='utf-8') as write_file:
         json.dump(pokemons, write_file, indent=4, sort_keys=True)
+
+    evoluciones_pokemon = convertirPokemonEvolucionAId(evoluciones_pokemon,pokemons)
+    with open(rutaJson+ficheroJsonEvolucionesPokemon, "w",encoding='utf-8') as write_file:
+        json.dump(evoluciones_pokemon, write_file, indent=4, sort_keys=True)
     
 def convertirArrayMovimientos(array):
     arrayNiveles=[]
@@ -152,3 +178,13 @@ def convertirArrayMovimientos(array):
         arrayRespuesta.append((nivel,movimiento))
     
     return arrayRespuesta
+
+def convertirPokemonEvolucionAId(evoluciones_pokemon,pokemons):
+    evoluciones_pokemon_id={}
+    evoluciones_pokemon_id['evoluciones']=[]
+
+    for pokemonEvolucion in evoluciones_pokemon['evoluciones']:
+        pokemonEvolucionId = list(pokemons.keys())[list(pokemons.values()).index(pokemonEvolucion['pokemon_evolucion'])]
+        evoluciones_pokemon_id['evoluciones'].append({'pokemon_id':pokemonEvolucion['pokemon_id'],'pokemon_evolucion_id':int(pokemonEvolucionId),'forma':pokemonEvolucion['forma'],'descripcion':pokemonEvolucion['descripcion']})
+    
+    return evoluciones_pokemon_id
