@@ -9,10 +9,13 @@ ficheroJsonTipos="tipos.json"
 ficheroJsonTiposPokemon="tipos_pokemon.json"
 ficheroJsonMovimientos="movimientos.json"
 ficheroJsonMovimientosPokemon="movimientos_pokemon.json"
+ficheroJsonPokemonsId="pokemons_id.json"
 
 def leerFicheroPokemon(ruta,nombreFichero,rutaJson):
     datos = {}
     datos['pokemons'] = []
+
+    pokemons = {}
 
     habilidades = {}
     habilidadesId = 1
@@ -37,7 +40,6 @@ def leerFicheroPokemon(ruta,nombreFichero,rutaJson):
 
     with open(ruta+nombreFichero,'r',encoding='utf-8') as f:
         pokemon = {}
-        id_pokemon=-1
 
         primerPokemon = True
         for linea in f:
@@ -103,6 +105,8 @@ def leerFicheroPokemon(ruta,nombreFichero,rutaJson):
                         else:
                             movimientoId = list(movimientos.keys())[list(movimientos.values()).index(movimiento)]
                         movimientos_pokemon['movimientos'].append({'pokemon_id':pokemon_id,'movimiento_id':movimientoId,'nivel_aprender':int(nivel)})
+                if 'InternalName' in nombre:
+                    pokemons[pokemon_id] = valor
                 elif 'BaseEXP' not in nombre and 'BattlerAltitude' not in nombre and 'BattlerEnemyY' not in nombre and 'BattlerPlayerY' not in nombre and 'EffortPoints' not in nombre:
                     pokemon[nombre]=valor
 
@@ -129,6 +133,9 @@ def leerFicheroPokemon(ruta,nombreFichero,rutaJson):
     
     with open(rutaJson+ficheroJsonMovimientosPokemon, "w",encoding='utf-8') as write_file:
         json.dump(movimientos_pokemon, write_file, indent=4, sort_keys=True)
+
+    with open(rutaJson+ficheroJsonPokemonsId, "w",encoding='utf-8') as write_file:
+        json.dump(pokemons, write_file, indent=4, sort_keys=True)
     
 def convertirArrayMovimientos(array):
     arrayNiveles=[]
