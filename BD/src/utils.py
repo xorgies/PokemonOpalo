@@ -10,6 +10,8 @@ nombreTablaTiposPokemon="Pokemon_Tipos"
 nombreTablaMovimientos="Movientos"
 nombreTablaMovimientosPokemon="Pokemon_Movimientos"
 nombreTablaEvoluciones="Evoluciones"
+nombreTablaLugares="Lugares"
+nombreTablaEncuentros="Encuentros"
 
 def crearTablas(conexion):
     ##########################################
@@ -64,6 +66,16 @@ def crearTablas(conexion):
         print("Se creo la tabla Movimientos")                        
     except sqlite3.OperationalError:
         print("La tabla Movimientos ya existe")
+    
+    # Movimientos                  
+    try:
+        conexion.execute(f"""create table {nombreTablaLugares} (
+                                id integer primary key,
+                                nombre text
+                            )""")
+        print("Se creo la tabla Lugares")                        
+    except sqlite3.OperationalError:
+        print("La tabla Lugares ya existe")
 
     ##########################################
     # tablas con relaciones
@@ -155,6 +167,23 @@ def crearTablas(conexion):
     except sqlite3.OperationalError:
         print("La tabla Evoluciones ya existe")
 
+    # Encuentros                  
+    try:
+        conexion.execute(f"""create table {nombreTablaEncuentros} (
+                                id integer primary key autoincrement,
+                                pokemon_id integer,
+                                nombre text,
+                                lugar_id integer,
+                                nivel_min integer,
+                                nivel_max integer,
+                                CONSTRAINT fk_lugar
+                                    FOREIGN KEY (lugar_id)
+                                    REFERENCES {nombreTablaLugares}(id)
+                            )""")
+        print("Se creo la tabla Encuentros")                        
+    except sqlite3.OperationalError:
+        print("La tabla Encuentros ya existe")
+
 def rellenarPokemons(conexion):
     with open("JsonTransformer/json/pokemon.json") as file:
         data = json.load(file)
@@ -239,6 +268,26 @@ def rellenarEvoluciones(conexion):
         for evoluciones_pokemon in data['evoluciones']:
             try:
                 conexion.execute("insert into "+nombreTablaEvoluciones+"(pokemon_id,pokemon_evolucion_id,forma,descripcion) values (?,?,?,?)", (evoluciones_pokemon['pokemon_id'],evoluciones_pokemon['pokemon_evolucion_id'],evoluciones_pokemon['forma'],evoluciones_pokemon['descripcion']))
+                conexion.commit()
+            except:
+                print("Ya existe la fila")
+
+def rellenarLugares(conexion):
+    with open("JsonTransformer/json/lugares.json") as file:
+        data = json.load(file)
+        for (id, nombre) in data.items():
+            try:
+                conexion.execute("insert into "+nombreTablaLugares+"(id,nombre) values (?,?)", (id, nombre))
+                conexion.commit()
+            except:
+                print("Ya existe la fila")
+
+def rellenarEncuentros(conexion):
+    with open("JsonTransformer/json/encuentros.json") as file:
+        data = json.load(file)
+        for encuentro in data['encuentros']:
+            try:
+                conexion.execute("insert into "+nombreTablaEncuentros+"(pokemon_id,nombre,lugar_id,nivel_min,nivel_max) values (?,?,?,?,?)", (encuentro['pokemon_id'],encuentro['nombre'],encuentro['lugar_id'],encuentro['nivel_min'],encuentro['nivel_max']))
                 conexion.commit()
             except:
                 print("Ya existe la fila")
