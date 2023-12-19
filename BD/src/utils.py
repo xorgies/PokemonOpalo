@@ -7,7 +7,7 @@ nombreTablaHabilidadesPokemon="Pokemon_Habilidades"
 nombreTablaEstadisticasPokemon="Pokemon_Estadisticas"
 nombreTablaTipos="Tipos"
 nombreTablaTiposPokemon="Pokemon_Tipos"
-nombreTablaMovimientos="Movientos"
+nombreTablaMovimientos="Movimientos"
 nombreTablaMovimientosPokemon="Pokemon_Movimientos"
 nombreTablaEvoluciones="Evoluciones"
 nombreTablaLugares="Lugares"
@@ -156,6 +156,7 @@ def crearTablas(conexion):
                                 pokemon_evolucion_id integer,
                                 forma text,
                                 descripcion text,
+                                primary key(pokemon_id,pokemon_evolucion_id)
                                 CONSTRAINT fk_pokemon
                                     FOREIGN KEY (pokemon_id)
                                     REFERENCES {nombreTablaPokemon}(id),
@@ -291,3 +292,64 @@ def rellenarEncuentros(conexion):
                 conexion.commit()
             except:
                 print("Ya existe la fila")
+
+def crearVistas(conexion):
+    # datos_pokemon_view  
+    try:
+        conexion.execute(f"""create view datos_pokemon_view AS
+                                select p.*, pe.ps,pe.atk,pe.def,pe.spd,pe.atk_sp,pe.def_sp,(select p2.name from Pokemon p2,Evoluciones e2 where p2.id = e.pokemon_evolucion_id and p.id = e2.pokemon_id) as nombre_evolucion,e.forma,e.descripcion
+                                FROM {nombreTablaPokemon} p, {nombreTablaEstadisticasPokemon} pe,{nombreTablaEvoluciones} e
+                                WHERE p.id=pe.pokemon_id
+                                    and e.pokemon_id = p.id
+                            """)
+        print("Se creo la vista datos_pokemon_view")                        
+    except sqlite3.OperationalError:
+        print("La vista datos_pokemon_view ya existe")
+
+    # evoluciones_view  
+    try:
+        conexion.execute(f"""create view evoluciones_view as
+                                select p.id,p.name, e.pokemon_evolucion_id,p2.name as name_evolucion,e.forma,e.descripcion  
+                                FROM {nombreTablaPokemon} p, {nombreTablaEvoluciones} e, {nombreTablaPokemon} p2
+                                where p.id = e.pokemon_id
+                                    and p2.id = e.pokemon_evolucion_id
+                            """)
+        print("Se creo la vista evoluciones_view")                        
+    except sqlite3.OperationalError:
+        print("La vista evoluciones_view ya existe")
+
+    # pokemon_tipos_view  
+    try:
+        conexion.execute(f"""create view pokemon_tipos_view as
+                                    select p.id,t.nombre
+                                    from {nombreTablaPokemon} p,{nombreTablaTiposPokemon} pt,{nombreTablaTipos} t
+                                    where p.id = pt.pokemon_id
+                                        and t.id = pt.tipo_id
+                            """)
+        print("Se creo la vista pokemon_tipos_view")                        
+    except sqlite3.OperationalError:
+        print("La vista pokemon_tipos_view ya existe")
+
+    # pokemon_movimientos_view  
+    try:
+        conexion.execute(f"""create view pokemon_movimientos_view as
+                                select p.id,m.nombre,pm.nivel_aprender
+                                from {nombreTablaPokemon} p,{nombreTablaMovimientosPokemon} pm,{nombreTablaMovimientos} m
+                                where p.id = pm.pokemon_id
+                                    and m.id = pm.movimiento_id
+                            """)
+        print("Se creo la vista pokemon_movimientos_view")                        
+    except sqlite3.OperationalError:
+        print("La vista pokemon_movimientos_view ya existe")
+    
+    # pokemon_habilidades_view  
+    try:
+        conexion.execute(f"""create view pokemon_habilidades_view as
+                                select p.id,h.nombre,ph.tipo
+                                from {nombreTablaPokemon} p,{nombreTablaHabilidadesPokemon} ph,{nombreTablaHabilidades} h
+                                where p.id = ph.pokemon_id
+                                    and h.id = ph.habilidad_id
+                            """)
+        print("Se creo la vista pokemon_habilidades_view")                        
+    except sqlite3.OperationalError:
+        print("La vista pokemon_habilidades_view ya existe")

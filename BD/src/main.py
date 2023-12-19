@@ -38,5 +38,8 @@ utils.rellenarLugares(conexion)
 print("==============================")
 print("Rellenando tablas Encuentros")
 utils.rellenarEncuentros(conexion)
+print("==============================")
+print("Creando vistas")
+utils.crearVistas(conexion)
 
 conexion.close()

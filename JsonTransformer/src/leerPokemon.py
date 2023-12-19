@@ -128,7 +128,7 @@ def leerFicheroPokemon(ruta,nombreFichero,rutaJson):
                         elif indiceAux == 3:
                             descripcion=valorAux
                             evoluciones_pokemon['evoluciones'].append({'pokemon_id':pokemon_id,'pokemon_evolucion':pokemonEvolucion,'forma':forma,'descripcion':descripcion})
-                            indiceAux = 0
+                            indiceAux = 1
                 elif 'BaseEXP' not in nombre and 'BattlerAltitude' not in nombre and 'BattlerEnemyY' not in nombre and 'BattlerPlayerY' not in nombre and 'EffortPoints' not in nombre:
                     pokemon[nombre]=valor
 
