@@ -22,7 +22,8 @@ def lista_pokemon():
 @app.route('/pokemon/<int:pokemon_id>')
 def pokemon(pokemon_id):
     dictPokemon= query_db('select * from Pokemon where id=?',[pokemon_id],one=True)
-    return render_template('pokemon.html', pokemon=dictPokemon)
+    dictHabilidades= query_db('select * from pokemon_habilidades_view where id=? order by tipo ASC',[pokemon_id])
+    return render_template('pokemon.html', pokemon=dictPokemon, habilidades=dictHabilidades)
 
 ###################################################################
 # DATABASE

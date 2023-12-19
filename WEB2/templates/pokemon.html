@@ -2,10 +2,35 @@
 
 {% block content %}
     <h1>Nº {{pokemon['id']}}: {{pokemon['name']}}</h1>
-    <fieldset>
-        <legend>Pokedex</legend>
-        <p>{{pokemon.pokedex}}</p>
-    </fieldset>
+    <div class="card">
+        <div class="card-body">
+            <fieldset>
+                <legend>Pokedex</legend>
+                <p>{{pokemon.pokedex}}</p>
+            </fieldset>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <fieldset>
+                <legend>Habilidades</legend>
+                <table>
+                    <thead>
+                        <th>Habilidad</th>
+                        <th>Tipo</th>
+                    </thead>
+                    <tbody>
+                        {% for habilidad in habilidades %}
+                            <tr>
+                                <td>{{habilidad["nombre"]}}</td>
+                                <td>{{habilidad["tipo"]}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </fieldset>
+        </div>
+    </div>
 
     
 {% endblock %}
