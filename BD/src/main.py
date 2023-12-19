@@ -2,7 +2,7 @@ import sqlite3
 import utils
 import os
 
-rutaBD="WEB/DB/database.sqlite3"
+rutaBD="WEB2/static/DB/database.sqlite3"
 
 try:
     os.remove(rutaBD)

@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <h1>Lista Pokemon</h1>
+    <table id="dataTable" class="table table-dark table-striped table-hover table-bordered">
+        <thead>
+            <tr>
+                <th class="text-center">Numero</th>
+                <th class="text-center">Nombre</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            {% for pokemonAux in pokemon %}
+                <tr>
+                    <td>{{pokemonAux["id"]}}</td>
+                    <td><a href="{{url_for('pokemon',pokemon_id=pokemonAux['id'])}}">{{pokemonAux["name"]}}</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <h1>Nº {{pokemon['id']}}: {{pokemon['name']}}</h1>
+    <fieldset>
+        <legend>Pokedex</legend>
+        <p>{{pokemon.pokedex}}</p>
+    </fieldset>
+
+    
+{% endblock %}
