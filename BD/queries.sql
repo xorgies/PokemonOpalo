@@ -17,3 +17,7 @@ select p.*, pe.ps,pe.atk,pe.def,pe.spd,pe.atk_sp,pe.def_sp,(select p2.name from 
 FROM Pokemon p, Pokemon_Estadisticas pe,Evoluciones e
 WHERE p.id=pe.pokemon_id
     and e.pokemon_id = p.id;
+
+select p.*, p2.*  FROM Pokemon p
+left join Evoluciones e ON p.id = e.pokemon_id
+left join Pokemon p2 ON p2.id = e.pokemon_evolucion_id
