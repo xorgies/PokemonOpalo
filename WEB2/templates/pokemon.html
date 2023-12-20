@@ -52,6 +52,30 @@
             </fieldset>
         </div>
     </div>
+        <div class="card">
+            <div class="card-body">
+                <fieldset>
+                    <legend>Evoluciones</legend>
+                    <table>
+                        <thead>
+                            <th>Nombre</th>
+                            <th>Forma</th>
+                            <th>Descripcion</th>
+                        </thead>
+                        <tbody>
+                            {% for evolucion in evoluciones %}
+                                <tr>
+                                    <td><a href="{{url_for('pokemon',pokemon_id=evolucion['pokemon_evolucion_id'])}}">{{evolucion["name_evolucion"]}}</a></td>
+                                    <td>{{evolucion["forma"]}}</td>
+                                    <td>{{evolucion["descripcion"]}}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+        </div>
+    </div>
 
     
 {% endblock %}
