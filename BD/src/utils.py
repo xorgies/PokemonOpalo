@@ -137,7 +137,7 @@ def crearTablas(conexion):
         conexion.execute(f"""create table {nombreTablaMovimientosPokemon} (
                                 pokemon_id integer,
                                 movimiento_id integer,
-                                nivel_aprender text,
+                                nivel_aprender integer,
                                 CONSTRAINT fk_pokemon
                                     FOREIGN KEY (pokemon_id)
                                     REFERENCES {nombreTablaPokemon}(id),
