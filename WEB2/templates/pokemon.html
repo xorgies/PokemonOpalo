@@ -31,6 +31,27 @@
             </fieldset>
         </div>
     </div>
+    <div class="card">
+        <div class="card-body">
+            <fieldset>
+                <legend>Movimientos</legend>
+                <table>
+                    <thead>
+                        <th>Nivel aprender</th>
+                        <th>Movimiento</th>
+                    </thead>
+                    <tbody>
+                        {% for movimiento in movimientos %}
+                            <tr>
+                                <td>{{movimiento["nivel_aprender"]}}</td>
+                                <td>{{movimiento["nombre"]}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </fieldset>
+        </div>
+    </div>
 
     
 {% endblock %}

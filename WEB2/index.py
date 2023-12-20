@@ -23,7 +23,8 @@ def lista_pokemon():
 def pokemon(pokemon_id):
     dictPokemon= query_db('select * from Pokemon where id=?',[pokemon_id],one=True)
     dictHabilidades= query_db('select * from pokemon_habilidades_view where id=? order by tipo ASC',[pokemon_id])
-    return render_template('pokemon.html', pokemon=dictPokemon, habilidades=dictHabilidades)
+    dictMovimientos=query_db('select * from pokemon_movimientos_view where id=? order by nivel_aprender ASC',[pokemon_id])
+    return render_template('pokemon.html', pokemon=dictPokemon, habilidades=dictHabilidades, movimientos=dictMovimientos)
 
 ###################################################################
 # DATABASE
