@@ -21,7 +21,7 @@ def lista_pokemon():
 
 @app.route('/pokemon/<int:pokemon_id>')
 def pokemon(pokemon_id):
-    dictPokemon= query_db('select * from Pokemon where id=?',[pokemon_id],one=True)
+    dictPokemon= query_db('select * from datos_pokemon_view where id=?',[pokemon_id],one=True)
     dictHabilidades= query_db('select * from pokemon_habilidades_view where id=? order by tipo ASC',[pokemon_id])
     dictMovimientos= query_db('select * from pokemon_movimientos_view where id=? order by nivel_aprender ASC',[pokemon_id])
     dictEvoluciones=  query_db('select * from evoluciones_view where id=?',[pokemon_id])
@@ -60,7 +60,7 @@ def query_db(query, args=(), one=False):
 
 if __name__ == '__main__':
     # PRO
-    app.run(host='0.0.0.0')
+    #app.run(host='0.0.0.0')
 
     # Testing
-    #app.run(debug=True)
+    app.run(debug=True)

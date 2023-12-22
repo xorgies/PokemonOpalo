@@ -297,10 +297,9 @@ def crearVistas(conexion):
     # datos_pokemon_view  
     try:
         conexion.execute(f"""create view datos_pokemon_view AS
-                                select p.*, pe.ps,pe.atk,pe.def,pe.spd,pe.atk_sp,pe.def_sp,(select p2.name from Pokemon p2,Evoluciones e2 where p2.id = e.pokemon_evolucion_id and p.id = e2.pokemon_id) as nombre_evolucion,e.forma,e.descripcion
-                                FROM {nombreTablaPokemon} p, {nombreTablaEstadisticasPokemon} pe,{nombreTablaEvoluciones} e
+                                select p.*, pe.ps,pe.atk,pe.def,pe.spd,pe.atk_sp,pe.def_sp
+                                FROM {nombreTablaPokemon} p, {nombreTablaEstadisticasPokemon} pe
                                 WHERE p.id=pe.pokemon_id
-                                    and e.pokemon_id = p.id
                             """)
         print("Se creo la vista datos_pokemon_view")                        
     except sqlite3.OperationalError:

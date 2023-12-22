@@ -14,11 +14,10 @@ ORDER BY pe.atk DESC;
 
 
 -- Vistas
-create view datos_pokemon AS
-select p.*, pe.ps,pe.atk,pe.def,pe.spd,pe.atk_sp,pe.def_sp,(select p2.name from Pokemon p2,Evoluciones e2 where p2.id = e.pokemon_evolucion_id and p.id = e2.pokemon_id) as nombre_evolucion,e.forma,e.descripcion
-FROM Pokemon p, Pokemon_Estadisticas pe,Evoluciones e
-WHERE p.id=pe.pokemon_id
-    and e.pokemon_id = p.id;
+create view datos_pokemon_view AS
+select p.*, pe.ps,pe.atk,pe.def,pe.spd,pe.atk_sp,pe.def_sp
+FROM Pokemon p, Pokemon_Estadisticas pe
+WHERE p.id=pe.pokemon_id;
 
 create view evoluciones_view as
 select p.id,p.name, e.pokemon_evolucion_id,p2.name as name_evolucion,e.forma,e.descripcion  
@@ -43,3 +42,19 @@ select p.id,h.nombre,ph.tipo
 from Pokemon p,Pokemon_Habilidades ph,Habilidades h
 where p.id = ph.pokemon_id
     and h.id = ph.habilidad_id;
+
+
+-- Maximo de cada estadistica
+select max(pe.ps) as ps,max(pe.atk) as atk,max(pe.def) as def,max(pe.spd) as spd,max(pe.atk_sp) as atk_sp,max(pe.def_sp) as def_sp
+FROM Pokemon_Estadisticas pe;
+
+-- Maximo entre todos los maximos de las estadisticas
+select max(
+            max(pe.ps),
+            max(pe.atk),
+            max(pe.def),
+            max(pe.spd),
+            max(pe.atk_sp),
+            max(pe.def_sp)
+        )
+FROM Pokemon_Estadisticas pe;

@@ -13,8 +13,19 @@
     <div class="card">
         <div class="card-body">
             <fieldset>
+                <legend>Estadisticas</legend>
+                <div id="container_chart">
+                    <div><canvas id="estadisticas_radar"></canvas></div>
+                    <div><canvas id="estadisticas_bar"></canvas></div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <fieldset>
                 <legend>Habilidades</legend>
-                <table>
+                <table class="table table-striped">
                     <thead>
                         <th>Habilidad</th>
                         <th>Tipo</th>
@@ -35,7 +46,7 @@
         <div class="card-body">
             <fieldset>
                 <legend>Movimientos</legend>
-                <table>
+                <table class="table">
                     <thead>
                         <th>Nivel aprender</th>
                         <th>Movimiento</th>
@@ -57,7 +68,7 @@
                 <fieldset>
                     <legend>Evoluciones</legend>
                     {% if evoluciones|length >0 %}
-                    <table>
+                    <table class="table">
                         <thead>
                             <th>Nombre</th>
                             <th>Forma</th>
@@ -80,6 +91,116 @@
             </div>
         </div>
     </div>
+
+    <script>
+        const statsPokemon = [{{pokemon.ps}},{{pokemon.atk}},{{pokemon.def}},{{pokemon.spd}},{{pokemon.atk_sp}},{{pokemon.def_sp}}];
+
+        new Chart(
+            document.getElementById('estadisticas_radar'),
+            {
+                type: 'radar',
+                data: {
+                    labels: ['PS','ATK','DEF','SPD','ATK_SP','DEF_SP'],
+                    datasets: [{
+                        label: 'Estadisticas',
+                        data: statsPokemon,
+                        fill: true,
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgb(255, 99, 132)',
+                        pointBackgroundColor: 'rgb(255, 99, 132)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(255, 99, 132)'
+                    }]
+                },
+                options: {
+                    elements: {
+                        line: {
+                            borderWidth: 3
+                        }
+                    },
+                    plugins:{
+                        legend:{
+                            display:false
+                        }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: false
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 255,
+                            ticks: {
+                                stepSize: 25
+                            },
+                            grid:{
+                                color: '#FFF'
+                            }
+                        }
+                    }
+                }
+            }
+        );
+
+        new Chart(
+            document.getElementById('estadisticas_bar'),
+            {
+                type: 'bar',
+                data: {
+                    labels: ['PS','ATK','DEF','SPD','ATK_SP','DEF_SP'],
+                    datasets: [{
+                        label: 'Estadisticas',
+                        data: statsPokemon,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(255, 159, 64, 0.2)',
+                            'rgba(255, 205, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(153, 102, 255, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(255, 159, 64)',
+                            'rgb(255, 205, 86)',
+                            'rgb(75, 192, 192)',
+                            'rgb(54, 162, 235)',
+                            'rgb(153, 102, 255)'
+                        ],
+                        borderWidth: 1,
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    elements: {
+                        line: {
+                            borderWidth: 3
+                        }
+                    },
+                    plugins:{
+                        legend:{
+                            display:false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            suggestedMax: 255,
+                            ticks: {
+                                stepSize: 25
+                            },
+                            grid:{
+                                color: '#FFF'
+                            }
+                        }
+                    }
+                }
+            }
+        );
+  
+
+    </script>
 
     
 {% endblock %}
