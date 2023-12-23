@@ -23,6 +23,7 @@ def lista_pokemon():
 def pokemon(pokemon_id):
     dictPokemon= query_db('select * from datos_pokemon_view where id=?',[pokemon_id],one=True)
     # TODO: calcular generos y guardarlo en dos nuevas variables (male,female)
+    generosPorcentaje = calcularGeneros(dictPokemon['genderRate'])
     dictPokemon["id"] = str(dictPokemon["id"]).zfill(3)
     dictHabilidades= query_db('select * from pokemon_habilidades_view where id=? order by tipo ASC',[pokemon_id])
     dictMovimientos= query_db('select * from pokemon_movimientos_view where id=? order by nivel_aprender ASC',[pokemon_id])
@@ -102,6 +103,13 @@ def get_estadisticas_posicion(pokemon):
         estadisticasPosicion[estadistica] = queryResult[estadistica]
     print(estadisticasPosicion)
     return estadisticasPosicion
+
+###################################################################
+# Utils
+def calcularGeneros(genero):
+    if 'FemaleOneEigth':
+        female = 12.5
+    male = 100 - female
 
 ###################################################################
 # Main
