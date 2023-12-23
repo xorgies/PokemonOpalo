@@ -238,6 +238,9 @@
                             {% endfor %}
                         </div>
                     {% endif %}
+                    {% if evoluciones|length == 0 and preevoluciones|length == 0 and multievoluciones|length == 0 %}
+                        <p>No tiene evoluciones</p>
+                    {% endif %}
                 </fieldset>
             </div>
         </div>
