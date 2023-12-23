@@ -23,3 +23,13 @@ legend{
     width: 50%;
     align-self: center;
 }
+#twoCards{
+    display: flex;
+    width: 100%;
+}
+#twoCards div{
+    width: 50%;
+}
+#twoCards div:nth-child(1){
+    width: 100%;
+}

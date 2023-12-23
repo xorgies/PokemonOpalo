@@ -25,7 +25,8 @@ def pokemon(pokemon_id):
     dictHabilidades= query_db('select * from pokemon_habilidades_view where id=? order by tipo ASC',[pokemon_id])
     dictMovimientos= query_db('select * from pokemon_movimientos_view where id=? order by nivel_aprender ASC',[pokemon_id])
     dictEvoluciones=  query_db('select * from evoluciones_view where id=?',[pokemon_id])
-    return render_template('pokemon.html', pokemon=dictPokemon, habilidades=dictHabilidades, movimientos=dictMovimientos, evoluciones=dictEvoluciones)
+    dictTipos= query_db('select * from pokemon_tipos_view where id=?',[pokemon_id])
+    return render_template('pokemon.html', pokemon=dictPokemon, habilidades=dictHabilidades, movimientos=dictMovimientos, evoluciones=dictEvoluciones, tipos=dictTipos)
 
 ###################################################################
 # DATABASE
@@ -60,7 +61,7 @@ def query_db(query, args=(), one=False):
 
 if __name__ == '__main__':
     # PRO
-    app.run(host='0.0.0.0')
+    #app.run(host='0.0.0.0')
 
     # Testing
-    #app.run(debug=True)
+    app.run(debug=True)
