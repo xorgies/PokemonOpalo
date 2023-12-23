@@ -28,7 +28,11 @@
                             </tr>
                             <tr>
                                 <td>Compatibility</td>
-                                <td>{{pokemon.compatibility}}</td>
+                                <td>
+                                    {% for group in pokemon.compatibility %}
+                                        <a href="{{url_for('egg_group',egg=group)}}">{{group}}</a>
+                                    {% endfor %}
+                                </td>
                             </tr>
                             <tr>
                                 <td>StepsToHatch</td>
@@ -63,7 +67,7 @@
                         <tbody>
                             {% for tipo in tipos %}
                                 <tr>
-                                    <td>{{tipo["nombre"]}}</td>
+                                    <td><a href="{{url_for('tipos',tipo=tipo['nombre'])}}">{{tipo["nombre"]}}</a></td>
                                 </tr>
                             {% endfor %}
                         </tbody>

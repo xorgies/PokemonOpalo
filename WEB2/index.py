@@ -24,6 +24,7 @@ def pokemon(pokemon_id):
     dictPokemon= query_db('select * from datos_pokemon_view where id=?',[pokemon_id],one=True)
     # TODO: calcular generos y guardarlo en dos nuevas variables (male,female)
     dictPokemon["id"] = str(dictPokemon["id"]).zfill(3)
+    dictPokemon["compatibility"] = str(dictPokemon["compatibility"]).split(',')
     dictHabilidades= query_db('select * from pokemon_habilidades_view where id=? order by tipo ASC',[pokemon_id])
     dictMovimientos= query_db('select * from pokemon_movimientos_view where id=? order by nivel_aprender ASC',[pokemon_id])
     dictMultiEvo = get_linea_multi_evolutiva(pokemon_id)
@@ -37,6 +38,25 @@ def pokemon(pokemon_id):
 
     return render_template('pokemon.html', pokemon=dictPokemon, habilidades=dictHabilidades, movimientos=dictMovimientos, multievoluciones=dictMultiEvo, preevoluciones=dictPreEvoluciones, evoluciones=dictEvoluciones, tipos=dictTipos)
 
+@app.route('/group/<string:egg>')
+def egg_group(egg):
+    egg_group = '%' + egg + '%'
+    # TODO: calcular generos y guardarlo en dos nuevas variables (male,female)
+    lista_pokemon = query_db('select id,name from Pokemon where compatibility like ?', [egg_group])
+    return (render_template('lista_filtrada.html', lista_pokemon=lista_pokemon, titulo=egg))
+
+@app.route('/tipo/<string:tipo>')
+def tipos(tipo):
+    tipo_filtro = '%' + tipo + '%'
+    lista_tipos = query_db('select distinct id from pokemon_tipos_view where nombre like ?', [tipo_filtro])
+    lista_tipos_str = '('
+    for entry in lista_tipos:
+        lista_tipos_str += str(entry['id'])
+        if entry['id'] != lista_tipos[-1]['id']:
+            lista_tipos_str += ','
+    lista_tipos_str += ')'
+    lista_pokemon = query_db('select id, name from Pokemon where id in '+lista_tipos_str)
+    return render_template('lista_filtrada.html', lista_pokemon=lista_pokemon, titulo=tipo)
 ###################################################################
 # DATABASE
 
