@@ -40,6 +40,7 @@ def get_linea_pre_evolutiva(pokemon_id):
     linea_evolutiva=[]
     pokemon = query_db('select * from evoluciones_view where pokemon_evolucion_id=?', [pokemon_id], True)
     if pokemon is not None:
+        pokemon["id"] = str(pokemon["id"]).zfill(3)
         linea_evolutiva = get_linea_pre_evolutiva(pokemon["id"])
         linea_evolutiva.append(pokemon)
     return linea_evolutiva
@@ -48,6 +49,7 @@ def get_linea_evolutiva(pokemon_id):
     linea_evolutiva=[]
     pokemon = query_db('select * from evoluciones_view where id=?', [pokemon_id], True)
     if pokemon is not None:
+        pokemon["pokemon_evolucion_id"] = str(pokemon["pokemon_evolucion_id"]).zfill(3)
         linea_evolutiva.append(pokemon)
         linea_evolutiva.extend(get_linea_evolutiva(pokemon["pokemon_evolucion_id"]))
     return linea_evolutiva
