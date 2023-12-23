@@ -28,7 +28,7 @@ def pokemon(pokemon_id):
     dictPreEvoluciones=  get_linea_pre_evolutiva(pokemon_id)
     dictEvoluciones=  get_linea_evolutiva(pokemon_id)
     dictTipos= query_db('select * from pokemon_tipos_view where id=?',[pokemon_id])
-    
+
     return render_template('pokemon.html', pokemon=dictPokemon, habilidades=dictHabilidades, movimientos=dictMovimientos, preevoluciones=dictPreEvoluciones, evoluciones=dictEvoluciones,tipos=dictTipos)
 
 ###################################################################
@@ -79,7 +79,7 @@ def query_db(query, args=(), one=False):
 
 if __name__ == '__main__':
     # PRO
-    #app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0')
 
     # Testing
-    app.run(debug=True)
+    #app.run(debug=True)
