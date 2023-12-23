@@ -38,7 +38,7 @@ where p.id = pm.pokemon_id
     and m.id = pm.movimiento_id;
 
 create view pokemon_habilidades_view as
-select p.id,h.nombre,ph.tipo
+select p.id,h.nombre,ph.tipo,h.id as habilidad_id,h.nombre_esp,h.descripcion
 from Pokemon p,Pokemon_Habilidades ph,Habilidades h
 where p.id = ph.pokemon_id
     and h.id = ph.habilidad_id;

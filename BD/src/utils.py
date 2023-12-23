@@ -269,7 +269,6 @@ def rellenarMovimientos(conexion):
             except:
                 print("Ya existe la fila")
 
-#TODO: hay pokemons que evolucionan al mismo de diferentes formas
 def rellenarEvoluciones(conexion):
     with open("JsonTransformer/json/evoluciones_pokemon.json") as file:
         data = json.load(file)
@@ -352,7 +351,7 @@ def crearVistas(conexion):
     # pokemon_habilidades_view  
     try:
         conexion.execute(f"""create view pokemon_habilidades_view as
-                                select p.id,h.nombre,ph.tipo
+                                select p.id,h.nombre,ph.tipo,h.id as habilidad_id,h.nombre_esp,h.descripcion
                                 from {nombreTablaPokemon} p,{nombreTablaHabilidadesPokemon} ph,{nombreTablaHabilidades} h
                                 where p.id = ph.pokemon_id
                                     and h.id = ph.habilidad_id
