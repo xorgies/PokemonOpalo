@@ -95,7 +95,40 @@
                 <legend>Estadisticas</legend>
                 <div id="container_chart">
                     <div><canvas id="estadisticas_radar"></canvas></div>
-                    <div><canvas id="estadisticas_bar"></canvas></div>
+                    <div>
+                        <canvas id="estadisticas_bar"></canvas>
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <th></th>
+                                <th>ps</th>
+                                <th>atk</th>
+                                <th>def</th>
+                                <th>spd</th>
+                                <th>atk_sp</th>
+                                <th>def_sp</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Valor</td>
+                                    <td>{{pokemon.ps}}</td>
+                                    <td>{{pokemon.atk}}</td>
+                                    <td>{{pokemon.def}}</td>
+                                    <td>{{pokemon.spd}}</td>
+                                    <td>{{pokemon.atk_sp}}</td>
+                                    <td>{{pokemon.def_sp}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Ranking</td>
+                                    <td>{{estadisticasPosicion.ps}}</td>
+                                    <td>{{estadisticasPosicion.atk}}</td>
+                                    <td>{{estadisticasPosicion.def}}</td>
+                                    <td>{{estadisticasPosicion.spd}}</td>
+                                    <td>{{estadisticasPosicion.atk_sp}}</td>
+                                    <td>{{estadisticasPosicion.def_sp}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </fieldset>
         </div>

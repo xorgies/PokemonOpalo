@@ -4,7 +4,7 @@ where p.id = pe.pokemon_id
 and pe.atk>(select pe.atk 
     FROM Pokemon p, Pokemon_Estadisticas pe 
     where p.id = pe.pokemon_id
-        and p.name = 'Kartana'
+        and p.id = 900
     ORDER BY pe.atk DESC);
 
 select p.name,pe.atk 

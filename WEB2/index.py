@@ -34,36 +34,15 @@ def pokemon(pokemon_id):
         dictPreEvoluciones=  get_linea_pre_evolutiva(pokemon_id)
         dictEvoluciones=  get_linea_evolutiva(pokemon_id)
     dictTipos= query_db('select * from pokemon_tipos_view where id=?',[pokemon_id])
+    dictEstadisticasPosicion= get_estadisticas_posicion(dictPokemon)
 
-    return render_template('pokemon.html', pokemon=dictPokemon, habilidades=dictHabilidades, movimientos=dictMovimientos, multievoluciones=dictMultiEvo, preevoluciones=dictPreEvoluciones, evoluciones=dictEvoluciones, tipos=dictTipos)
+    return render_template('pokemon.html', pokemon=dictPokemon, habilidades=dictHabilidades, movimientos=dictMovimientos, multievoluciones=dictMultiEvo, preevoluciones=dictPreEvoluciones, evoluciones=dictEvoluciones, tipos=dictTipos, estadisticasPosicion=dictEstadisticasPosicion)
 
 ###################################################################
 # DATABASE
 
 DATABASE = 'WEB2/static/DB/database.sqlite3'
 
-def get_linea_multi_evolutiva(pokemon_id):
-    linea_evolutiva = query_db('select * from evoluciones_view where id=?', [pokemon_id])
-    for evolucion in linea_evolutiva:
-        evolucion["pokemon_evolucion_id"] = str(evolucion["pokemon_evolucion_id"]).zfill(3)
-    return linea_evolutiva
-def get_linea_pre_evolutiva(pokemon_id):
-    linea_evolutiva=[]
-    pokemon = query_db('select * from evoluciones_view where pokemon_evolucion_id=?', [pokemon_id], True)
-    if pokemon is not None:
-        pokemon["id"] = str(pokemon["id"]).zfill(3)
-        linea_evolutiva = get_linea_pre_evolutiva(pokemon["id"])
-        linea_evolutiva.append(pokemon)
-    return linea_evolutiva
-
-def get_linea_evolutiva(pokemon_id):
-    linea_evolutiva=[]
-    pokemon = query_db('select * from evoluciones_view where id=?', [pokemon_id], True)
-    if pokemon is not None:
-        pokemon["pokemon_evolucion_id"] = str(pokemon["pokemon_evolucion_id"]).zfill(3)
-        linea_evolutiva.append(pokemon)
-        linea_evolutiva.extend(get_linea_evolutiva(pokemon["pokemon_evolucion_id"]))
-    return linea_evolutiva
 def make_dicts(cursor, row):
     return dict((cursor.description[idx][0], value)
                 for idx, value in enumerate(row))
@@ -87,12 +66,46 @@ def query_db(query, args=(), one=False):
     cur.close()
     return (rv[0] if rv else None) if one else rv
 
+# Utils
+def get_linea_multi_evolutiva(pokemon_id):
+    linea_evolutiva = query_db('select * from evoluciones_view where id=?', [pokemon_id])
+    for evolucion in linea_evolutiva:
+        evolucion["pokemon_evolucion_id"] = str(evolucion["pokemon_evolucion_id"]).zfill(3)
+    return linea_evolutiva
+
+def get_linea_pre_evolutiva(pokemon_id):
+    linea_evolutiva=[]
+    pokemon = query_db('select * from evoluciones_view where pokemon_evolucion_id=?', [pokemon_id], True)
+    if pokemon is not None:
+        pokemon["id"] = str(pokemon["id"]).zfill(3)
+        linea_evolutiva = get_linea_pre_evolutiva(pokemon["id"])
+        linea_evolutiva.append(pokemon)
+    return linea_evolutiva
+
+def get_linea_evolutiva(pokemon_id):
+    linea_evolutiva=[]
+    pokemon = query_db('select * from evoluciones_view where id=?', [pokemon_id], True)
+    if pokemon is not None:
+        pokemon["pokemon_evolucion_id"] = str(pokemon["pokemon_evolucion_id"]).zfill(3)
+        linea_evolutiva.append(pokemon)
+        linea_evolutiva.extend(get_linea_evolutiva(pokemon["pokemon_evolucion_id"]))
+    return linea_evolutiva
+
+def get_estadisticas_posicion(pokemon):
+    estadisticasPosicion = {}
+    estadisticas = ['ps','atk','def','spd','atk_sp','def_sp']
+    for estadistica in estadisticas:
+        queryResult = query_db('select count() as '+estadistica+' from Pokemon p, Pokemon_Estadisticas pe where p.id = pe.pokemon_id and pe.'+estadistica+'>?', [pokemon[estadistica]], True)
+        estadisticasPosicion[estadistica] = queryResult[estadistica]
+    print(estadisticasPosicion)
+    return estadisticasPosicion
+
 ###################################################################
 # Main
 
 if __name__ == '__main__':
     # PRO
-    app.run(host='0.0.0.0')
+    #app.run(host='0.0.0.0')
 
     # Testing
-    #app.run(debug=True)
+    app.run(debug=True)
