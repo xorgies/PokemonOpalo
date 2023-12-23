@@ -13,6 +13,10 @@ app = Flask(__name__)
 def home():
     return render_template('home.html')
 
+@app.route('/calculadora')
+def calculadora():
+    return render_template('calculadora.html')
+
 @app.route('/pokemonLista')
 def lista_pokemon():
     dictPokemon= query_db('select id,name from Pokemon')
@@ -156,7 +160,6 @@ def calcularGeneros(genero):
 
 def cambiarFormatoId(dictPokemon):
     dictPokemonActualizado = []
-    print(dictPokemon)
     for pokemon in dictPokemon:
         pokemon["id"] = str(pokemon["id"]).zfill(3)
         dictPokemonActualizado.append(pokemon)
