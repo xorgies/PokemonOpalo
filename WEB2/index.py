@@ -16,8 +16,9 @@ def home():
 @app.route('/pokemonLista')
 def lista_pokemon():
     dictPokemon= query_db('select id,name from Pokemon')
-
-    return render_template('pokemon_lista.html', pokemon=dictPokemon)
+    dictPokemon= cambiarFormatoId(dictPokemon)
+    dictTipos= aplanarTipos(query_db('select * from pokemon_tipos_view'))
+    return render_template('pokemon_lista.html', pokemon=dictPokemon, tipos=dictTipos)
 
 @app.route('/pokemon/<int:pokemon_id>')
 def pokemon(pokemon_id):
@@ -49,7 +50,9 @@ def egg_group(egg):
     egg_group = '%' + egg + '%'
     # TODO: calcular generos y guardarlo en dos nuevas variables (male,female)
     lista_pokemon = query_db('select id,name from Pokemon where compatibility like ?', [egg_group])
-    return (render_template('lista_filtrada.html', lista_pokemon=lista_pokemon, titulo=egg))
+    lista_pokemon= cambiarFormatoId(lista_pokemon)
+    dictTipos= aplanarTipos(query_db('select * from pokemon_tipos_view'))
+    return (render_template('lista_filtrada.html', lista_pokemon=lista_pokemon, titulo=egg, tipos=dictTipos))
 
 @app.route('/tipo/<string:tipo>')
 def tipos(tipo):
@@ -62,7 +65,11 @@ def tipos(tipo):
             lista_tipos_str += ','
     lista_tipos_str += ')'
     lista_pokemon = query_db('select id, name from Pokemon where id in '+lista_tipos_str)
-    return render_template('lista_filtrada.html', lista_pokemon=lista_pokemon, titulo=tipo)
+    # TODO: buscar imagen mas grande para los tipos y llamarlos {tipo}_xl.png
+    tipo = '<img class="img-tipo-filtrado" src="/static/img/tipos/'+tipo+'.png">'
+    lista_pokemon= cambiarFormatoId(lista_pokemon)
+    dictTipos= aplanarTipos(query_db('select * from pokemon_tipos_view'))
+    return render_template('lista_filtrada.html', lista_pokemon=lista_pokemon, titulo=tipo, tipos=dictTipos)
 ###################################################################
 # DATABASE
 
@@ -147,12 +154,31 @@ def calcularGeneros(genero):
 
     return [male,female]
 
+def cambiarFormatoId(dictPokemon):
+    dictPokemonActualizado = []
+    print(dictPokemon)
+    for pokemon in dictPokemon:
+        pokemon["id"] = str(pokemon["id"]).zfill(3)
+        dictPokemonActualizado.append(pokemon)
+
+    return dictPokemonActualizado
+
+def aplanarTipos(tipos):
+    tiposPokemon = {}
+    for tipo in tipos:
+        tipo["id"] = str(tipo["id"]).zfill(3)
+        if tipo['id'] not in tiposPokemon.keys():
+            tiposPokemon[tipo['id']] = []
+        tiposPokemon[tipo['id']].append(tipo['nombre'])
+
+    return tiposPokemon
+
 ###################################################################
 # Main
 
 if __name__ == '__main__':
     # PRO
-    app.run(host='0.0.0.0')
+    #app.run(host='0.0.0.0')
 
     # Testing
-    #app.run(debug=True)
+    app.run(debug=True)

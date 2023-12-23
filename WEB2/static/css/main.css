@@ -7,6 +7,12 @@ table, th, td{
     border: 1px solid white;
     border-collapse: collapse;
 }*/
+.pokemon-img-tabla{
+    width: 40px;
+}
+.img-tipo-filtrado{
+    /*width: 100px;*/
+}
 legend{
     border: 1px solid white;
     background-color: lightsalmon;

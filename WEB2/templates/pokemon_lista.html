@@ -8,14 +8,22 @@
                 <thead>
                     <tr>
                         <th class="text-center">Numero</th>
+                        <th class="text-center">Imagen</th>
                         <th class="text-center">Nombre</th>
+                        <th class="text-center">Tipos</th>
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
                     {% for pokemonAux in pokemon %}
                         <tr>
-                            <td>{{pokemonAux["id"]}}</td>
-                            <td><a href="{{url_for('pokemon',pokemon_id=pokemonAux['id'])}}">{{pokemonAux["name"]}}</a></td>
+                            <td class="text-center">{{pokemonAux["id"]}}</td>
+                            <td class="text-center"><img class="pokemon-img-tabla lazy" src="/static/img/{{pokemonAux['id']}}.png"></td>
+                            <td class="text-center"><a href="{{url_for('pokemon',pokemon_id=pokemonAux['id'])}}">{{pokemonAux["name"]}}</a></td>
+                            <td class="text-center">
+                                {% for tipoPokemon in tipos[pokemonAux["id"]] %}
+                                <a href="{{url_for('tipos',tipo=tipoPokemon)}}"><img class="lazy" src="/static/img/tipos/{{tipoPokemon}}.png"></a>
+                                {% endfor %}
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>
