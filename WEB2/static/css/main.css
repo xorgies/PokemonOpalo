@@ -7,6 +7,10 @@ table, th, td{
     border: 1px solid white;
     border-collapse: collapse;
 }*/
+.container-fluid{
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
 .pokemon-img-tabla{
     width: 40px;
 }
