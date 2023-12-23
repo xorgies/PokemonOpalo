@@ -13,4 +13,11 @@ $(document).ready(function () {
       ]
     }*/
     );
+    $('[data-table]').each(function(){
+        $(this).DataTable({
+            drawCallback: function(){
+                $("img.lazy").lazyload();
+            }
+        });
+    });
 });
