@@ -178,7 +178,7 @@ def aplanarTipos(tipos):
 
 if __name__ == '__main__':
     # PRO
-    #app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0')
 
     # Testing
-    app.run(debug=True)
+    #app.run(debug=True)
