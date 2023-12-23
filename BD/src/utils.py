@@ -64,7 +64,14 @@ def crearTablas(conexion):
     try:
         conexion.execute(f"""create table {nombreTablaMovimientos} (
                                 id integer primary key,
-                                nombre text
+                                nombre text,
+                                nombre_esp text,
+                                potencia integer,
+                                tipo text,
+                                clase text,
+                                precision integer,
+                                pp integer,
+                                descripcion text
                             )""")
         print("Se creo la tabla Movimientos")                        
     except sqlite3.OperationalError:
@@ -251,13 +258,13 @@ def rellenarTipos(conexion):
                 print("Ya existe la fila")
 
 def rellenarMovimientos(conexion):
-    with open("JsonTransformer/json/movimientos.json") as file:
+    with open("JsonTransformer/json/movimientos.json",encoding='utf-8') as file:
         data = json.load(file)
-        for (id, nombre) in data.items():
+        for (id, movimiento) in data.items():
             try:
-                conexion.execute("insert into "+nombreTablaMovimientos+"(id,nombre) values (?,?)", (id, nombre))
+                conexion.execute("insert into "+nombreTablaMovimientos+"(id,nombre,nombre_esp,potencia,tipo,clase,precision,pp,descripcion) values (?,?,?,?,?,?,?,?,?)", (id, movimiento['nombre'],movimiento['nombre_esp'],movimiento['potencia'],movimiento['tipo'],movimiento['clase'],movimiento['precision'],movimiento['pp'],movimiento['descripcion']))
                 conexion.commit()
-            except:
+            except Exception as error:
                 print("Ya existe la fila")
 
     with open("JsonTransformer/json/movimientos_pokemon.json") as file:
@@ -339,7 +346,7 @@ def crearVistas(conexion):
     # pokemon_movimientos_view  
     try:
         conexion.execute(f"""create view pokemon_movimientos_view as
-                                select p.id,m.nombre,pm.nivel_aprender
+                                select p.id,m.nombre,pm.nivel_aprender,m.nombre_esp,m.potencia,m.tipo,m.clase,m.precision,m.pp,m.descripcion
                                 from {nombreTablaPokemon} p,{nombreTablaMovimientosPokemon} pm,{nombreTablaMovimientos} m
                                 where p.id = pm.pokemon_id
                                     and m.id = pm.movimiento_id
