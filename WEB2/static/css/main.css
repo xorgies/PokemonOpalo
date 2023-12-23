@@ -15,8 +15,21 @@ table, th, td{
     width: 40px;
 }
 .img-tipo-filtrado{
-    /*width: 100px;*/
+    width: 150px;
 }
+/*
+#div-img-tipo-filtrado{
+    width: 380px;
+}
+#NORMAL{
+    width: 40%;
+    height: 60px;
+    background: url(../img/tipos/tipos_pokemon.png);
+    background-position: 0 0;
+    background-size: 500%;
+    background-color: none;
+}
+*/
 .img-center{
     display: block;
     margin-left: auto;
