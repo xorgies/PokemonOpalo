@@ -5,3 +5,4 @@ JsonTransformer/json/*.json
 .vscode
 pokedex.session.sql
 WEB/DB/database.sqlite3
+JsonTransformer/src/pruebas.py
