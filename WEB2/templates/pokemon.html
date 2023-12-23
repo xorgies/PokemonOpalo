@@ -85,6 +85,33 @@
             <div class="card-body">
                 <fieldset>
                     <legend>Evoluciones</legend>
+                    {% if multievoluciones|length > 0 %}
+                        <div id="linea-evolutiva">
+                            {% for evolucion in multievoluciones %}
+                                <div class="d-flex">
+                                    <div class="pokemon-card">
+                                        <figure class="pokevolution d-flex">
+                                            <img src="/static/img/{{pokemon['id']}}.png">
+                                        </figure>
+                                        <div class="info d-flex">
+                                            <p class="nombre-pokemon">{{pokemon['name']}}</p>
+                                        </div>
+                                    </div>
+                                    <div class="pokemon-card">
+                                        <figure class="pokevolution d-flex">
+                                            <img src="/static/img/{{evolucion['pokemon_evolucion_id']}}.png">
+                                        </figure>
+                                        <div class="info d-flex">
+                                            <div class="arrow_box before d-flex">
+                                                <p>{{evolucion["forma"]}} {{evolucion["descripcion"]}}</p>
+                                            </div>
+                                            <p class="nombre-pokemon"><a href="{{url_for('pokemon',pokemon_id=evolucion['pokemon_evolucion_id'])}}">{{evolucion["name_evolucion"]}}</a></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                     {% if evoluciones|length > 0 or preevoluciones|length > 0 %}
                         <div id="linea-evolutiva" class="d-flex">
                             {% for evolucion in preevoluciones %}
@@ -122,8 +149,6 @@
                                 </div>
                             {% endfor %}
                         </div>
-                    {% else %}
-                        <p>No hay evoluciones</p>
                     {% endif %}
                 </fieldset>
             </div>

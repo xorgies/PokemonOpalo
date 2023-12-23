@@ -25,17 +25,27 @@ def pokemon(pokemon_id):
     dictPokemon["id"] = str(dictPokemon["id"]).zfill(3)
     dictHabilidades= query_db('select * from pokemon_habilidades_view where id=? order by tipo ASC',[pokemon_id])
     dictMovimientos= query_db('select * from pokemon_movimientos_view where id=? order by nivel_aprender ASC',[pokemon_id])
-    dictPreEvoluciones=  get_linea_pre_evolutiva(pokemon_id)
-    dictEvoluciones=  get_linea_evolutiva(pokemon_id)
+    dictMultiEvo = get_linea_multi_evolutiva(pokemon_id)
+    dictPreEvoluciones = []
+    dictEvoluciones = []
+    if len(dictMultiEvo) <= 1:
+        dictMultiEvo = []
+        dictPreEvoluciones=  get_linea_pre_evolutiva(pokemon_id)
+        dictEvoluciones=  get_linea_evolutiva(pokemon_id)
     dictTipos= query_db('select * from pokemon_tipos_view where id=?',[pokemon_id])
 
-    return render_template('pokemon.html', pokemon=dictPokemon, habilidades=dictHabilidades, movimientos=dictMovimientos, preevoluciones=dictPreEvoluciones, evoluciones=dictEvoluciones,tipos=dictTipos)
+    return render_template('pokemon.html', pokemon=dictPokemon, habilidades=dictHabilidades, movimientos=dictMovimientos, multievoluciones=dictMultiEvo, preevoluciones=dictPreEvoluciones, evoluciones=dictEvoluciones, tipos=dictTipos)
 
 ###################################################################
 # DATABASE
 
 DATABASE = 'WEB2/static/DB/database.sqlite3'
 
+def get_linea_multi_evolutiva(pokemon_id):
+    linea_evolutiva = query_db('select * from evoluciones_view where id=?', [pokemon_id])
+    for evolucion in linea_evolutiva:
+        evolucion["pokemon_evolucion_id"] = str(evolucion["pokemon_evolucion_id"]).zfill(3)
+    return linea_evolutiva
 def get_linea_pre_evolutiva(pokemon_id):
     linea_evolutiva=[]
     pokemon = query_db('select * from evoluciones_view where pokemon_evolucion_id=?', [pokemon_id], True)
