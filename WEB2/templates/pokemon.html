@@ -67,23 +67,43 @@
             <div class="card-body">
                 <fieldset>
                     <legend>Evoluciones</legend>
-                    {% if evoluciones|length >0 %}
-                    <table class="table">
-                        <thead>
-                            <th>Nombre</th>
-                            <th>Forma</th>
-                            <th>Descripcion</th>
-                        </thead>
-                        <tbody>
-                            {% for evolucion in evoluciones %}
-                                <tr>
-                                    <td><a href="{{url_for('pokemon',pokemon_id=evolucion['pokemon_evolucion_id'])}}">{{evolucion["name_evolucion"]}}</a></td>
-                                    <td>{{evolucion["forma"]}}</td>
-                                    <td>{{evolucion["descripcion"]}}</td>
-                                </tr>
+                    {% if evoluciones|length > 0 or preevoluciones|length > 0 %}
+                        <div id="linea-evolutiva" class="d-flex">
+                            {% for evolucion in preevoluciones %}
+                                <div class="pokemon-card">
+                                    <figure class="pokevolution d-flex">
+                                        <img src="/WEB2/static/img/{{pokemon['id']}}.png">
+                                    </figure>
+                                    <div class="info d-flex">
+                                        <p class="nombre-pokemon"><a href="{{url_for('pokemon',pokemon_id=evolucion['id'])}}">{{evolucion["name"]}}</a></p>
+                                        <div class="arrow_box d-flex">
+                                            <p>{{evolucion["forma"]}} {{evolucion["descripcion"]}}</p>
+                                        </div>
+                                    </div>
+                                </div>
                             {% endfor %}
-                        </tbody>
-                    </table>
+                            <div class="pokemon-card">
+                                <figure class="pokevolution d-flex">
+                                    <img src="/WEB2/static/img/{{pokemon['id']}}.png">
+                                </figure>
+                                <div class="info d-flex">
+                                    <p class="nombre-pokemon">{{pokemon['name']}}</p>
+                                </div>
+                            </div>
+                            {% for evolucion in evoluciones %}
+                                <div class="pokemon-card">
+                                    <figure class="pokevolution d-flex">
+                                        <img src="/WEB2/static/img/{{pokemon['id']}}.png">
+                                    </figure>
+                                    <div class="info d-flex">
+                                        <div class="arrow_box before d-flex">
+                                            <p>{{evolucion["forma"]}} {{evolucion["descripcion"]}}</p>
+                                        </div>
+                                        <p class="nombre-pokemon"><a href="{{url_for('pokemon',pokemon_id=evolucion['pokemon_evolucion_id'])}}">{{evolucion["name_evolucion"]}}</a></p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
                     {% else %}
                         <p>No hay evoluciones</p>
                     {% endif %}

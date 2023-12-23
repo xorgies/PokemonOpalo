@@ -22,16 +22,33 @@ def lista_pokemon():
 @app.route('/pokemon/<int:pokemon_id>')
 def pokemon(pokemon_id):
     dictPokemon= query_db('select * from datos_pokemon_view where id=?',[pokemon_id],one=True)
+    dictPokemon["id"] = str(dictPokemon["id"]).zfill(3)
     dictHabilidades= query_db('select * from pokemon_habilidades_view where id=? order by tipo ASC',[pokemon_id])
     dictMovimientos= query_db('select * from pokemon_movimientos_view where id=? order by nivel_aprender ASC',[pokemon_id])
-    dictEvoluciones=  query_db('select * from evoluciones_view where id=?',[pokemon_id])
-    return render_template('pokemon.html', pokemon=dictPokemon, habilidades=dictHabilidades, movimientos=dictMovimientos, evoluciones=dictEvoluciones)
+    dictPreEvoluciones=  get_linea_pre_evolutiva(pokemon_id)
+    dictEvoluciones=  get_linea_evolutiva(pokemon_id)
+    return render_template('pokemon.html', pokemon=dictPokemon, habilidades=dictHabilidades, movimientos=dictMovimientos, preevoluciones=dictPreEvoluciones, evoluciones=dictEvoluciones)
 
 ###################################################################
 # DATABASE
 
 DATABASE = 'WEB2/static/DB/database.sqlite3'
 
+def get_linea_pre_evolutiva(pokemon_id):
+    linea_evolutiva=[]
+    pokemon = query_db('select * from evoluciones_view where pokemon_evolucion_id=?', [pokemon_id], True)
+    if pokemon is not None:
+        linea_evolutiva = get_linea_pre_evolutiva(pokemon["id"])
+        linea_evolutiva.append(pokemon)
+    return linea_evolutiva
+
+def get_linea_evolutiva(pokemon_id):
+    linea_evolutiva=[]
+    pokemon = query_db('select * from evoluciones_view where id=?', [pokemon_id], True)
+    if pokemon is not None:
+        linea_evolutiva.append(pokemon)
+        linea_evolutiva.extend(get_linea_evolutiva(pokemon["pokemon_evolucion_id"]))
+    return linea_evolutiva
 def make_dicts(cursor, row):
     return dict((cursor.description[idx][0], value)
                 for idx, value in enumerate(row))
