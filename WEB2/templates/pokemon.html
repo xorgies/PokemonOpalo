@@ -201,7 +201,7 @@
                             {% for evolucion in multievoluciones %}
                                 <div class="d-flex">
                                     {{ render_pokemon(pokemon, 'id', 'name', False, 'right') }}
-                                    {{ render_pokemon(evolucion, 'id', 'name', True) }}
+                                    {{ render_pokemon(evolucion, 'pokemon_evolucion_id', 'name_evolucion', True) }}
                                 </div>
                             {% endfor %}
                         </div>
