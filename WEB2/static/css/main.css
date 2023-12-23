@@ -13,6 +13,11 @@ table, th, td{
 .img-tipo-filtrado{
     /*width: 100px;*/
 }
+.img-center{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
 legend{
     border: 1px solid white;
     background-color: lightsalmon;
