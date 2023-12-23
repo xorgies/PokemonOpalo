@@ -1,6 +1,7 @@
 {% extends 'layout.html' %}
 
 {% block content %}
+<div class="container">
     <h1>Nº {{pokemon['id']}}: {{pokemon['name']}}</h1>
     <div id="twoCards">
         <div class="card">
@@ -246,7 +247,7 @@
             </div>
         </div>
     </div>
-
+</div>
     <script>
         const statsPokemon = [{{pokemon.ps}},{{pokemon.atk}},{{pokemon.def}},{{pokemon.spd}},{{pokemon.atk_sp}},{{pokemon.def_sp}}];
 
