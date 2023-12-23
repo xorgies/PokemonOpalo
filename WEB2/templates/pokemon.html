@@ -109,7 +109,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>Valor</td>
+                                    <th>Valor</th>
                                     <td>{{pokemon.ps}}</td>
                                     <td>{{pokemon.atk}}</td>
                                     <td>{{pokemon.def}}</td>
@@ -118,7 +118,7 @@
                                     <td>{{pokemon.def_sp}}</td>
                                 </tr>
                                 <tr>
-                                    <td>Ranking</td>
+                                    <th>Ranking</th>
                                     <td>{{estadisticasPosicion.ps}}</td>
                                     <td>{{estadisticasPosicion.atk}}</td>
                                     <td>{{estadisticasPosicion.def}}</td>
@@ -151,6 +151,20 @@
                         {% endfor %}
                     </tbody>
                 </table>
+                {% if movimientosHuevo|length > 0 %}
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <th>Movimientos Huevo</th>
+                    </thead>
+                    <tbody>
+                        {% for movimientoHuevo in movimientosHuevo %}
+                            <tr>
+                                <td>{{movimientoHuevo}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% endif %}
             </fieldset>
         </div>
     </div>

@@ -35,8 +35,11 @@ def pokemon(pokemon_id):
         dictEvoluciones=  get_linea_evolutiva(pokemon_id)
     dictTipos= query_db('select * from pokemon_tipos_view where id=?',[pokemon_id])
     dictEstadisticasPosicion= get_estadisticas_posicion(dictPokemon)
+    dictMovimientosHuevo= []
+    if dictPokemon['eggMoves'] is not None:
+        dictMovimientosHuevo = dictPokemon['eggMoves'].split(',')
 
-    return render_template('pokemon.html', pokemon=dictPokemon, habilidades=dictHabilidades, movimientos=dictMovimientos, multievoluciones=dictMultiEvo, preevoluciones=dictPreEvoluciones, evoluciones=dictEvoluciones, tipos=dictTipos, estadisticasPosicion=dictEstadisticasPosicion)
+    return render_template('pokemon.html', pokemon=dictPokemon, habilidades=dictHabilidades, movimientos=dictMovimientos, multievoluciones=dictMultiEvo, preevoluciones=dictPreEvoluciones, evoluciones=dictEvoluciones, tipos=dictTipos, estadisticasPosicion=dictEstadisticasPosicion, movimientosHuevo=dictMovimientosHuevo)
 
 ###################################################################
 # DATABASE

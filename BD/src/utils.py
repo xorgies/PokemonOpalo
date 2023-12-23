@@ -31,7 +31,8 @@ def crearTablas(conexion):
                                 height real,
                                 weight real,
                                 color text,
-                                pokedex text
+                                pokedex text,
+                                eggMoves text
                             )""")
         print("Se creo la tabla Pokemon")                        
     except sqlite3.OperationalError:
@@ -190,7 +191,10 @@ def rellenarPokemons(conexion):
         data = json.load(file)
         for pokemon in data['pokemons']:
             try:
-                conexion.execute("insert into "+nombreTablaPokemon+"(id,name,genderRate,growthRate,rareness,happiness,compatibility,stepsToHatch,height,weight,color,pokedex) values (?,?,?,?,?,?,?,?,?,?,?,?)", (pokemon['id'], pokemon['Name'], pokemon['GenderRate'],pokemon['GrowthRate'],pokemon['Rareness'],pokemon['Happiness'],pokemon['Compatibility'],pokemon['StepsToHatch'],pokemon['Height'],pokemon['Weight'],pokemon['Color'],pokemon['Pokedex']))
+                if 'EggMoves' in pokemon.keys():
+                    conexion.execute("insert into "+nombreTablaPokemon+"(id,name,genderRate,growthRate,rareness,happiness,compatibility,stepsToHatch,height,weight,color,pokedex,eggMoves) values (?,?,?,?,?,?,?,?,?,?,?,?,?)", (pokemon['id'], pokemon['Name'], pokemon['GenderRate'],pokemon['GrowthRate'],pokemon['Rareness'],pokemon['Happiness'],pokemon['Compatibility'],pokemon['StepsToHatch'],pokemon['Height'],pokemon['Weight'],pokemon['Color'],pokemon['Pokedex'],pokemon['EggMoves']))
+                else:
+                    conexion.execute("insert into "+nombreTablaPokemon+"(id,name,genderRate,growthRate,rareness,happiness,compatibility,stepsToHatch,height,weight,color,pokedex) values (?,?,?,?,?,?,?,?,?,?,?,?)", (pokemon['id'], pokemon['Name'], pokemon['GenderRate'],pokemon['GrowthRate'],pokemon['Rareness'],pokemon['Happiness'],pokemon['Compatibility'],pokemon['StepsToHatch'],pokemon['Height'],pokemon['Weight'],pokemon['Color'],pokemon['Pokedex']))
                 conexion.commit()
             except:
                 print("Ya existe la fila")
