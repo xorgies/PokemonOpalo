@@ -1,0 +1,28 @@
+{% macro render_pokemon(pokemon, id='id', name='name', show_arrow=True, arrow_location='left') %}
+    <div class="pokemon-card">
+        <figure class="pokevolution d-flex">
+            <a href="{{url_for('pokemon',pokemon_id=pokemon[id])}}"><img src="/static/img/{{ pokemon[id]}}.png"></a>
+        </figure>
+        <div class="info d-flex">
+            {% if show_arrow and arrow_location == 'left' %}
+                <div class="arrow_box before d-flex">
+                    <p>{{ pokemon["forma"]}} {{ pokemon["descripcion"]}}</p>
+                </div>
+            {% endif %}
+            <p class="nombre-pokemon"><a href="{{url_for('pokemon',pokemon_id=pokemon[id])}}">{{ pokemon[name]}}</a></p>
+            {% if show_arrow and arrow_location == 'right' %}
+                <div class="arrow_box d-flex">
+                    <p>{{ pokemon["forma"]}} {{ pokemon["descripcion"]}}</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro nav_link(name, endpoint, li_classes="", a_classes="") %}
+    {% if request.endpoint and request.endpoint.endswith(endpoint) %}
+        <li class="nav-item {{li_classes}}"><a class="nav-link active {{a_classes}}" href="{{ url_for(endpoint) }}">{{name}}</a></li>
+    {% else %}
+        <li class="nav-item {{li_classes}}"><a class="nav-link {{a_classes}}" href="{{ url_for(endpoint) }}">{{name}}</a></li>
+    {% endif %}
+{% endmacro %}

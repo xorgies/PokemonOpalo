@@ -1,25 +1,5 @@
 {% extends 'layout.html' %}
-
-{% macro render_pokemon(pokemon, id='id', name='name', show_arrow=True, arrow_location='left') %}
-    <div class="pokemon-card">
-        <figure class="pokevolution d-flex">
-            <a href="{{url_for('pokemon',pokemon_id=pokemon[id])}}"><img src="/static/img/{{ pokemon[id]}}.png"></a>
-        </figure>
-        <div class="info d-flex">
-            {% if show_arrow and arrow_location == 'left' %}
-                <div class="arrow_box before d-flex">
-                    <p>{{ pokemon["forma"]}} {{ pokemon["descripcion"]}}</p>
-                </div>
-            {% endif %}
-            <p class="nombre-pokemon"><a href="{{url_for('pokemon',pokemon_id=pokemon[id])}}">{{ pokemon[name]}}</a></p>
-            {% if show_arrow and arrow_location == 'right' %}
-                <div class="arrow_box d-flex">
-                    <p>{{ pokemon["forma"]}} {{ pokemon["descripcion"]}}</p>
-                </div>
-            {% endif %}
-        </div>
-    </div>
-{% endmacro %}
+{% from "includes/macros.html" import render_pokemon %}
 
 {% block content %}
 <div class="container">
