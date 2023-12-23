@@ -1,5 +1,7 @@
 BD/src/__pycache__
 JsonTransformer/src/__pycache__
 myvenv
-JsonTransformer/json
-
+JsonTransformer/json/*.json
+.vscode
+pokedex.session.sql
+WEB/DB/database.sqlite3
