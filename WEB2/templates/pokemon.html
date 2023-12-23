@@ -188,7 +188,7 @@
                                     </div>
                                     <div class="pokemon-card">
                                         <figure class="pokevolution d-flex">
-                                            <img src="/static/img/{{evolucion['pokemon_evolucion_id']}}.png">
+                                            <a href="{{url_for('pokemon',pokemon_id=evolucion['pokemon_evolucion_id'])}}"><img src="/static/img/{{evolucion['pokemon_evolucion_id']}}.png"></a>
                                         </figure>
                                         <div class="info d-flex">
                                             <div class="arrow_box before d-flex">
@@ -206,7 +206,7 @@
                             {% for evolucion in preevoluciones %}
                                 <div class="pokemon-card">
                                     <figure class="pokevolution d-flex">
-                                        <img src="/static/img/{{evolucion['id']}}.png">
+                                        <a href="{{url_for('pokemon',pokemon_id=evolucion['id'])}}"><img src="/static/img/{{evolucion['id']}}.png"></a>
                                     </figure>
                                     <div class="info d-flex">
                                         <p class="nombre-pokemon"><a href="{{url_for('pokemon',pokemon_id=evolucion['id'])}}">{{evolucion["name"]}}</a></p>
@@ -227,7 +227,7 @@
                             {% for evolucion in evoluciones %}
                                 <div class="pokemon-card">
                                     <figure class="pokevolution d-flex">
-                                        <img src="/static/img/{{evolucion['pokemon_evolucion_id']}}.png">
+                                        <a href="{{url_for('pokemon',pokemon_id=evolucion['pokemon_evolucion_id'])}}"><img src="/static/img/{{evolucion['pokemon_evolucion_id']}}.png"></a>
                                     </figure>
                                     <div class="info d-flex">
                                         <div class="arrow_box before d-flex">
