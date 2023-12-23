@@ -42,7 +42,9 @@ def crearTablas(conexion):
     try:
         conexion.execute(f"""create table {nombreTablaHabilidades} (
                                 id integer primary key,
-                                nombre text
+                                nombre text,
+                                nombre_esp text,
+                                descripcion text
                             )""")
         print("Se creo la tabla Habilidades")                        
     except sqlite3.OperationalError:
@@ -187,7 +189,7 @@ def crearTablas(conexion):
         print("La tabla Encuentros ya existe")
 
 def rellenarPokemons(conexion):
-    with open("JsonTransformer/json/pokemon.json") as file:
+    with open("JsonTransformer/json/pokemon.json",encoding='ISO-8859-1') as file:
         data = json.load(file)
         for pokemon in data['pokemons']:
             try:
@@ -196,16 +198,16 @@ def rellenarPokemons(conexion):
                 else:
                     conexion.execute("insert into "+nombreTablaPokemon+"(id,name,genderRate,growthRate,rareness,happiness,compatibility,stepsToHatch,height,weight,color,pokedex) values (?,?,?,?,?,?,?,?,?,?,?,?)", (pokemon['id'], pokemon['Name'], pokemon['GenderRate'],pokemon['GrowthRate'],pokemon['Rareness'],pokemon['Happiness'],pokemon['Compatibility'],pokemon['StepsToHatch'],pokemon['Height'],pokemon['Weight'],pokemon['Color'],pokemon['Pokedex']))
                 conexion.commit()
-            except:
+            except Exception as error:
                 print("Ya existe la fila")
                 
 
 def rellenarHabilidades(conexion):
-    with open("JsonTransformer/json/habilidades.json") as file:
+    with open("JsonTransformer/json/habilidades.json",encoding='ISO-8859-1') as file:
         data = json.load(file)
-        for (id, nombre) in data.items():
+        for (id, habilidad) in data.items():
             try:
-                conexion.execute("insert into "+nombreTablaHabilidades+"(id,nombre) values (?,?)", (id, nombre))
+                conexion.execute("insert into "+nombreTablaHabilidades+"(id,nombre,nombre_esp,descripcion) values (?,?,?,?)", (id, habilidad['nombre'],habilidad['nombre_esp'],habilidad['descripcion']))
                 conexion.commit()
             except:
                 print("Ya existe la fila")
@@ -267,6 +269,7 @@ def rellenarMovimientos(conexion):
             except:
                 print("Ya existe la fila")
 
+#TODO: hay pokemons que evolucionan al mismo de diferentes formas
 def rellenarEvoluciones(conexion):
     with open("JsonTransformer/json/evoluciones_pokemon.json") as file:
         data = json.load(file)
@@ -276,6 +279,7 @@ def rellenarEvoluciones(conexion):
                 conexion.commit()
             except:
                 print("Ya existe la fila")
+                print("insert into "+nombreTablaEvoluciones+"(pokemon_id,pokemon_evolucion_id,forma,descripcion) values (?,?,?,?)", (evoluciones_pokemon['pokemon_id'],evoluciones_pokemon['pokemon_evolucion_id'],evoluciones_pokemon['forma'],evoluciones_pokemon['descripcion']))
 
 def rellenarLugares(conexion):
     with open("JsonTransformer/json/lugares.json") as file:
@@ -288,7 +292,7 @@ def rellenarLugares(conexion):
                 print("Ya existe la fila")
 
 def rellenarEncuentros(conexion):
-    with open("JsonTransformer/json/encuentros.json") as file:
+    with open("JsonTransformer/json/encuentros.json",encoding='ISO-8859-1') as file:
         data = json.load(file)
         for encuentro in data['encuentros']:
             try:
@@ -356,3 +360,15 @@ def crearVistas(conexion):
         print("Se creo la vista pokemon_habilidades_view")                        
     except sqlite3.OperationalError:
         print("La vista pokemon_habilidades_view ya existe")
+
+    # encuentros_lugares_view  
+    try:
+        conexion.execute(f"""create view encuentros_lugares_view as
+                                select e.id, e.pokemon_id, e.nombre, e.nivel_min, e.nivel_max, l.nombre as nombre_lugar
+                                from {nombreTablaEncuentros} e, {nombreTablaLugares} l
+                                where e.lugar_id = l.id
+                            """)
+        print("Se creo la vista encuentros_lugares_view")                        
+    except sqlite3.OperationalError:
+        print("La vista encuentros_lugares_view ya existe")
+

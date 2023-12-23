@@ -2174,7 +2174,7 @@ WildItemUncommon=LAGGINGTAIL
 BattlerPlayerY=0
 BattlerEnemyY=27
 BattlerAltitude=0
-Evolutions=SLOWBRO,Level,37,SLOWKING,DayHoldItem,KINGSROCK,SLOWKING,Item,WATERSTONE
+Evolutions=SLOWBRO,Level,37,SLOWKING,Item,WATERSTONE
 [80]
 Name=Slowbro
 InternalName=SLOWBRO
@@ -24633,7 +24633,7 @@ Pokedex=Al tirar de los mechones blancos de la cabeza, acrecienta su espíritu l
 BattlerPlayerY=0
 BattlerEnemyY=25
 BattlerAltitude=0
-Evolutions=URSHIFU,HappinessDay,,URSHIFU,HappinessNight,
+Evolutions=URSHIFU,Happiness,
 [919]
 Name=Urshifu
 InternalName=URSHIFU

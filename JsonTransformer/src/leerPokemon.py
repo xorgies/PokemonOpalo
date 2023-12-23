@@ -18,8 +18,8 @@ def leerFicheroPokemon(ruta,nombreFichero,rutaJson):
 
     pokemons = {}
 
-    habilidades = {}
-    habilidadesId = 1
+    with open(rutaJson+ficheroJsonHabilidades,'r',encoding='utf-8') as file:
+        dictHabilidades = json.load(file)
 
     tipos = {}
     tiposId = 1
@@ -70,22 +70,11 @@ def leerFicheroPokemon(ruta,nombreFichero,rutaJson):
                 if 'Abilities' == nombre:
                     habilidadesSplit = valor.split(',')
                     for habilidad in habilidadesSplit:
-                        habilidadId = -1
-                        if habilidad not in habilidades.values():
-                            habilidades[habilidadesId] = habilidad
-                            habilidadId = habilidadesId
-                            habilidadesId = habilidadesId + 1
-                        else:
-                            habilidadId = list(habilidades.keys())[list(habilidades.values()).index(habilidad)]
-                        habilidades_pokemon['habilidades'].append({'pokemon_id':pokemon_id,'habilidad_id':habilidadId,'tipo':'normal'})
+                        habilidadId = buscarIdHabilidad(dictHabilidades,habilidad)
+                        habilidades_pokemon['habilidades'].append({'pokemon_id':pokemon_id,'habilidad_id':int(habilidadId),'tipo':'normal'})
                 elif 'HiddenAbility' == nombre:
-                    if valor not in habilidades.values():
-                        habilidades[habilidadesId] = valor
-                        habilidadId = habilidadesId
-                        habilidadesId = habilidadesId + 1
-                    else:
-                        habilidadId = list(habilidades.keys())[list(habilidades.values()).index(valor)]
-                    habilidades_pokemon['habilidades'].append({'pokemon_id':pokemon_id,'habilidad_id':habilidadId,'tipo':'oculta'})
+                    habilidadId = buscarIdHabilidad(dictHabilidades,habilidad)
+                    habilidades_pokemon['habilidades'].append({'pokemon_id':pokemon_id,'habilidad_id':int(habilidadId),'tipo':'oculta'})
                 elif 'BaseStats' == nombre:
                     baseStatsSplit = valor.split(',')
                     estadisticas_pokemon['estadisticas'].append({'pokemon_id':pokemon_id,'ps':baseStatsSplit[0],'atk':baseStatsSplit[1],'def':baseStatsSplit[2],'spd':baseStatsSplit[3],'atk_sp':baseStatsSplit[4],'def_sp':baseStatsSplit[5]})
@@ -133,35 +122,32 @@ def leerFicheroPokemon(ruta,nombreFichero,rutaJson):
                     pokemon[nombre]=valor
 
     with open(rutaJson+ficheroJsonPokemon, "w",encoding='utf-8') as write_file:
-        json.dump(datos, write_file, indent=4, sort_keys=True)
-
-    with open(rutaJson+ficheroJsonHabilidades, "w",encoding='utf-8') as write_file:
-        json.dump(habilidades, write_file, indent=4, sort_keys=True)
+        json.dump(datos, write_file, indent=4, sort_keys=True,ensure_ascii=False)
 
     with open(rutaJson+ficheroJsonHabilidadesPokemon, "w",encoding='utf-8') as write_file:
-        json.dump(habilidades_pokemon, write_file, indent=4, sort_keys=True)
+        json.dump(habilidades_pokemon, write_file, indent=4, sort_keys=True,ensure_ascii=False)
 
     with open(rutaJson+ficheroJsonEstadisticasPokemon, "w",encoding='utf-8') as write_file:
-        json.dump(estadisticas_pokemon, write_file, indent=4, sort_keys=True)
+        json.dump(estadisticas_pokemon, write_file, indent=4, sort_keys=True,ensure_ascii=False)
 
     with open(rutaJson+ficheroJsonTipos, "w",encoding='utf-8') as write_file:
-        json.dump(tipos, write_file, indent=4, sort_keys=True)
+        json.dump(tipos, write_file, indent=4, sort_keys=True,ensure_ascii=False)
     
     with open(rutaJson+ficheroJsonTiposPokemon, "w",encoding='utf-8') as write_file:
-        json.dump(tipos_pokemon, write_file, indent=4, sort_keys=True)
+        json.dump(tipos_pokemon, write_file, indent=4, sort_keys=True,ensure_ascii=False)
     
     with open(rutaJson+ficheroJsonMovimientos, "w",encoding='utf-8') as write_file:
-        json.dump(movimientos, write_file, indent=4, sort_keys=True)
+        json.dump(movimientos, write_file, indent=4, sort_keys=True,ensure_ascii=False)
     
     with open(rutaJson+ficheroJsonMovimientosPokemon, "w",encoding='utf-8') as write_file:
         json.dump(movimientos_pokemon, write_file, indent=4, sort_keys=True)
 
     with open(rutaJson+ficheroJsonPokemonsId, "w",encoding='utf-8') as write_file:
-        json.dump(pokemons, write_file, indent=4, sort_keys=True)
+        json.dump(pokemons, write_file, indent=4, sort_keys=True,ensure_ascii=False)
 
     evoluciones_pokemon = convertirPokemonEvolucionAId(evoluciones_pokemon,pokemons)
     with open(rutaJson+ficheroJsonEvolucionesPokemon, "w",encoding='utf-8') as write_file:
-        json.dump(evoluciones_pokemon, write_file, indent=4, sort_keys=True)
+        json.dump(evoluciones_pokemon, write_file, indent=4, sort_keys=True,ensure_ascii=False)
     
 def convertirArrayMovimientos(array):
     arrayNiveles=[]
@@ -188,3 +174,8 @@ def convertirPokemonEvolucionAId(evoluciones_pokemon,pokemons):
         evoluciones_pokemon_id['evoluciones'].append({'pokemon_id':pokemonEvolucion['pokemon_id'],'pokemon_evolucion_id':int(pokemonEvolucionId),'forma':pokemonEvolucion['forma'],'descripcion':pokemonEvolucion['descripcion']})
     
     return evoluciones_pokemon_id
+
+def buscarIdHabilidad(dictHabilidades,nombreHabilidad):
+    for (id, habilidad) in dictHabilidades.items():
+        if habilidad['nombre'] == nombreHabilidad:
+            return id

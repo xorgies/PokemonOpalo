@@ -1,10 +1,21 @@
 import leerPokemon
 import leerEncuentros
+import leerHabilidades
 
 rutaTxt = "jsonTransformer/txt/"
 rutaJson = "jsonTransformer/json/"
 ficheroPokemon = "pokemon.txt"
 ficheroEncuentros = "encounters.txt"
+ficheroHabilidades = "abilities.txt"
+ficheroMovimientos = "moves.txt"
+
+
+print("=======================================")
+print("Leyendo habilidades en {}{}".format(rutaTxt,ficheroHabilidades))
+leerHabilidades.leerFicheroHabilidades(rutaTxt,ficheroHabilidades,rutaJson)
+print("=======================================")
+print("Fin de leer habilidades")
+print("=======================================")
 
 print("=======================================")
 print("Leyendo pokemons en {}{}".format(rutaTxt,ficheroPokemon))
