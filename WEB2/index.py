@@ -22,8 +22,9 @@ def lista_pokemon():
 @app.route('/pokemon/<int:pokemon_id>')
 def pokemon(pokemon_id):
     dictPokemon= query_db('select * from datos_pokemon_view where id=?',[pokemon_id],one=True)
-    # TODO: calcular generos y guardarlo en dos nuevas variables (male,female)
     generosPorcentaje = calcularGeneros(dictPokemon['genderRate'])
+    dictPokemon["male"] = generosPorcentaje[0]
+    dictPokemon["female"] = generosPorcentaje[1]
     dictPokemon["id"] = str(dictPokemon["id"]).zfill(3)
     dictPokemon["compatibility"] = str(dictPokemon["compatibility"]).split(',')
     dictHabilidades= query_db('select * from pokemon_habilidades_view where id=? order by tipo ASC',[pokemon_id])
@@ -121,15 +122,30 @@ def get_estadisticas_posicion(pokemon):
     for estadistica in estadisticas:
         queryResult = query_db('select count() as '+estadistica+' from Pokemon p, Pokemon_Estadisticas pe where p.id = pe.pokemon_id and pe.'+estadistica+'>?', [pokemon[estadistica]], True)
         estadisticasPosicion[estadistica] = queryResult[estadistica]
-    print(estadisticasPosicion)
     return estadisticasPosicion
 
 ###################################################################
 # Utils
 def calcularGeneros(genero):
-    if 'FemaleOneEigth':
+    female = 0
+    if 'FemaleOneEighth' == genero:
         female = 12.5
+    elif 'Female50Percent' == genero:
+        female = 50
+    elif 'AlwaysFemale' == genero:
+        female = 100
+    elif 'AlwaysMale' == genero:
+        female = 0
+    elif 'Female75Percent' == genero:
+        female = 75
+    elif 'Female25Percent' == genero:
+        female = 25
+    
     male = 100 - female
+    if 'Genderless' == genero:
+        male = 0
+
+    return [male,female]
 
 ###################################################################
 # Main
