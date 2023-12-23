@@ -73,7 +73,7 @@ def leerFicheroPokemon(ruta,nombreFichero,rutaJson):
                         habilidadId = buscarIdHabilidad(dictHabilidades,habilidad)
                         habilidades_pokemon['habilidades'].append({'pokemon_id':pokemon_id,'habilidad_id':int(habilidadId),'tipo':'normal'})
                 elif 'HiddenAbility' == nombre:
-                    habilidadId = buscarIdHabilidad(dictHabilidades,habilidad)
+                    habilidadId = buscarIdHabilidad(dictHabilidades,valor)
                     habilidades_pokemon['habilidades'].append({'pokemon_id':pokemon_id,'habilidad_id':int(habilidadId),'tipo':'oculta'})
                 elif 'BaseStats' == nombre:
                     baseStatsSplit = valor.split(',')

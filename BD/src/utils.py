@@ -189,7 +189,7 @@ def crearTablas(conexion):
         print("La tabla Encuentros ya existe")
 
 def rellenarPokemons(conexion):
-    with open("JsonTransformer/json/pokemon.json",encoding='ISO-8859-1') as file:
+    with open("JsonTransformer/json/pokemon.json",encoding='utf-8') as file:
         data = json.load(file)
         for pokemon in data['pokemons']:
             try:
