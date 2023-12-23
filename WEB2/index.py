@@ -22,6 +22,7 @@ def lista_pokemon():
 @app.route('/pokemon/<int:pokemon_id>')
 def pokemon(pokemon_id):
     dictPokemon= query_db('select * from datos_pokemon_view where id=?',[pokemon_id],one=True)
+    # TODO: calcular generos y guardarlo en dos nuevas variables (male,female)
     dictPokemon["id"] = str(dictPokemon["id"]).zfill(3)
     dictHabilidades= query_db('select * from pokemon_habilidades_view where id=? order by tipo ASC',[pokemon_id])
     dictMovimientos= query_db('select * from pokemon_movimientos_view where id=? order by nivel_aprender ASC',[pokemon_id])
