@@ -16,9 +16,8 @@
                 <tbody class="table-group-divider">
                     {% for habilidad in habilidades %}
                         <tr>
-                            <!-- TODO: hacer enlaces al detalle -->
-                            <td class="text-center">{{habilidad["nombre"]}}</td>
-                            <td class="text-center">{{habilidad["nombre_esp"]}}</td>
+                            <td class="text-center"><a href="{{url_for('habilidad',habilidad_id=habilidad['id'])}}">{{habilidad["nombre"]}}</a></td>
+                            <td class="text-center"><a href="{{url_for('habilidad',habilidad_id=habilidad['id'])}}">{{habilidad["nombre_esp"]}}</a></td>
                             <td class="text-center">{{habilidad["descripcion"]}}</td>
                         </tr>
                     {% endfor %}
