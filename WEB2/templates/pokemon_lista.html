@@ -18,7 +18,7 @@
                     {% for pokemonAux in pokemon %}
                         <tr>
                             <td class="text-center">{{pokemonAux["id"]}}</td>
-                            <td class="text-center"><a href="{{url_for('pokemon',pokemon_id=pokemonAux['id'])}}"><img class="pokemon-img-tabla lazy" src="/static/img/{{pokemonAux['id']}}.png"></a></td>
+                            <td class="text-center"><a href="{{url_for('pokemon',pokemon_id=pokemonAux['id'])}}"><img class="pokemon-img-tabla lazy" loading="lazy" src="/static/img/{{pokemonAux['id']}}.png"></a></td>
                             <td class="text-center"><a href="{{url_for('pokemon',pokemon_id=pokemonAux['id'])}}">{{pokemonAux["name"]}}</a></td>
                             <td class="text-center">
                                 {% for tipoPokemon in tipos[pokemonAux["id"]] %}

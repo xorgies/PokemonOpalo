@@ -83,7 +83,7 @@
                         <tbody>
                             {% for habilidad in habilidades %}
                                 <tr>
-                                    <td>{{habilidad["nombre_esp"]}}</td>
+                                    <td data-bs-toggle="tooltip" title="{{habilidad["descripcion"]}}">{{habilidad["nombre_esp"]}}</td>
                                     <td>{{habilidad["tipo"]}}</td>
                                 </tr>
                             {% endfor %}

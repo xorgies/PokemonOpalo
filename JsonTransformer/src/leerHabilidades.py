@@ -9,15 +9,16 @@ def leerFicheroHabilidades(ruta,nombreFichero,rutaJson):
     with open(ruta+nombreFichero,'r',encoding='utf-8-sig') as f:
         for linea in f:
             linea = linea.replace("\n","")
-            lineaSplit = linea.split(',')
+            lineaSplitAux = linea.split('\"')
+            lineaSplit = lineaSplitAux[0].split(',')
 
             habilidadesId = lineaSplit[0]
             nombre = lineaSplit[1]
             nombre_esp = lineaSplit[2]
-            descripcion = lineaSplit[3]
+            descripcion = lineaSplitAux[1].replace("\"","")
 
 
-            habilidades[habilidadesId] = {'nombre':nombre,'nombre_esp':nombre_esp,'descripcion':descripcion.replace("\"","")}
+            habilidades[habilidadesId] = {'nombre':nombre,'nombre_esp':nombre_esp,'descripcion':descripcion}
     
 
     with open(rutaJson+ficheroJsonHabilidades, "w",encoding='utf-8') as write_file:

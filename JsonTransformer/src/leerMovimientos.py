@@ -9,7 +9,8 @@ def leerFicheroMovimientos(ruta,nombreFichero,rutaJson):
     with open(ruta+nombreFichero,'r',encoding='utf-8-sig') as f:
         for linea in f:
             linea = linea.replace("\n","")
-            lineaSplit = linea.split(',')
+            lineaSplitAux = linea.split('\"')
+            lineaSplit = lineaSplitAux[0].split(',')
 
             movimientosId = lineaSplit[0]
             nombre = lineaSplit[1]
@@ -19,9 +20,9 @@ def leerFicheroMovimientos(ruta,nombreFichero,rutaJson):
             clase = lineaSplit[6]
             precision = int(lineaSplit[7])
             pp = int(lineaSplit[8])
-            descripcion = lineaSplit[13]
+            descripcion = lineaSplitAux[1].replace("\"","")
 
-            movimientos[movimientosId] = {'nombre':nombre,'nombre_esp':nombre_esp,'potencia':potencia,'tipo':tipo,'clase':clase,'precision':precision,'pp':pp,'descripcion':descripcion.replace("\"","")}
+            movimientos[movimientosId] = {'nombre':nombre,'nombre_esp':nombre_esp,'potencia':potencia,'tipo':tipo,'clase':clase,'precision':precision,'pp':pp,'descripcion':descripcion}
     
 
     with open(rutaJson+ficheroJsonMovimientos, "w",encoding='utf-8') as write_file:

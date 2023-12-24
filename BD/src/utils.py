@@ -210,7 +210,7 @@ def rellenarPokemons(conexion):
                 
 
 def rellenarHabilidades(conexion):
-    with open("JsonTransformer/json/habilidades.json",encoding='ISO-8859-1') as file:
+    with open("JsonTransformer/json/habilidades.json",encoding='utf-8') as file:
         data = json.load(file)
         for (id, habilidad) in data.items():
             try:
