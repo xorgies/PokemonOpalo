@@ -32,16 +32,28 @@ where p.id = pt.pokemon_id
     and t.id = pt.tipo_id;
 
 create view pokemon_movimientos_view as
-select p.id,m.nombre,pm.nivel_aprender
+select p.id,m.id as movimiento_id,m.nombre,pm.nivel_aprender,m.nombre_esp,m.potencia,m.tipo,m.clase,m.precision,m.pp,m.descripcion
 from Pokemon p,Pokemon_Movimientos pm,Movimientos m
 where p.id = pm.pokemon_id
     and m.id = pm.movimiento_id;
 
 create view pokemon_habilidades_view as
-select p.id,h.nombre,ph.tipo
+select p.id,h.nombre,ph.tipo,h.id as habilidad_id,h.nombre_esp,h.descripcion
 from Pokemon p,Pokemon_Habilidades ph,Habilidades h
 where p.id = ph.pokemon_id
     and h.id = ph.habilidad_id;
+
+create view habilidad_pokemons_view as
+select h.id,p.name,ph.tipo,p.id as pokemon_id
+from Pokemon p,Pokemon_Habilidades ph,Habilidades h
+where p.id = ph.pokemon_id
+    and h.id = ph.habilidad_id;
+
+create view movimiento_pokemons_view as
+select m.id,p.name,pm.nivel_aprender,p.id as pokemon_id
+from Pokemon p,Pokemon_Movimientos pm,Movimientos m
+where p.id = pm.pokemon_id
+    and m.id = pm.movimiento_id;
 
 create view encuentros_lugares_view as
 select e.id, e.pokemon_id, e.nombre, e.nivel_min, e.nivel_max, l.nombre as nombre_lugar from Encuentros e, Lugares l where e.lugar_id = l.id;

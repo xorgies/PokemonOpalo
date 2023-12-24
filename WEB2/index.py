@@ -1,8 +1,6 @@
 from flask import Flask, render_template
 import sqlite3
 from flask import g
-import os
-import json
 
 app = Flask(__name__)
 
@@ -20,7 +18,7 @@ def calculadora():
 @app.route('/pokemonLista')
 def lista_pokemon():
     dictPokemon= query_db('select id,name from Pokemon')
-    dictPokemon= cambiarFormatoId(dictPokemon)
+    dictPokemon= cambiarFormatoId(dictPokemon,"id")
     dictTipos= aplanarTipos(query_db('select * from pokemon_tipos_view'))
     return render_template('pokemon_lista.html', pokemon=dictPokemon, tipos=dictTipos)
 
@@ -54,7 +52,7 @@ def egg_group(egg):
     egg_group = '%' + egg + '%'
     # TODO: calcular generos y guardarlo en dos nuevas variables (male,female)
     lista_pokemon = query_db('select id,name from Pokemon where compatibility like ?', [egg_group])
-    lista_pokemon= cambiarFormatoId(lista_pokemon)
+    lista_pokemon= cambiarFormatoId(lista_pokemon,"id")
     dictTipos= aplanarTipos(query_db('select * from pokemon_tipos_view'))
     return (render_template('lista_filtrada.html', lista_pokemon=lista_pokemon, titulo=egg, tipos=dictTipos))
 
@@ -69,12 +67,38 @@ def tipos(tipo):
             lista_tipos_str += ','
     lista_tipos_str += ')'
     lista_pokemon = query_db('select id, name from Pokemon where id in '+lista_tipos_str)
-    # TODO: buscar imagen mas grande para los tipos y llamarlos {tipo}_xl.png
-    #tipo = '<div id="div-img-tipo-filtrado"><img class="img-tipo-filtrado" id="'+tipo+'"></div>' #src="/static/img/tipos/'+tipo+'.png">'
     tipo = '<img class="img-tipo-filtrado img-center" src="/static/img/tipos/'+tipo+'_xl.png">'
-    lista_pokemon= cambiarFormatoId(lista_pokemon)
+    lista_pokemon= cambiarFormatoId(lista_pokemon,"id")
     dictTipos= aplanarTipos(query_db('select * from pokemon_tipos_view'))
     return render_template('lista_filtrada.html', lista_pokemon=lista_pokemon, titulo=tipo, tipos=dictTipos)
+
+@app.route('/habilidadesLista')
+def lista_habilidades():
+    dictHabilidades= query_db('select * from Habilidades')
+    return render_template('habilidades_lista.html', habilidades=dictHabilidades)
+
+@app.route('/habilidad/<int:habilidad_id>')
+def habilidad(habilidad_id):
+    dictHabilidad= query_db('select * from Habilidades where id=?',[habilidad_id],one=True)
+    dictPokemonsHabilidad= query_db('select * from habilidad_pokemons_view where id=?',[habilidad_id])
+    dictPokemonsHabilidad= cambiarFormatoId(dictPokemonsHabilidad,"pokemon_id")
+    dictTipos= aplanarTipos(query_db('select * from pokemon_tipos_view'))
+
+    return render_template('habilidad.html', habilidad=dictHabilidad, pokemons=dictPokemonsHabilidad,tipos=dictTipos)
+
+@app.route('/movimientosLista')
+def lista_movimientos():
+    dictMovimientos= query_db('select * from Movimientos')
+    return render_template('movimientos_lista.html', movimientos=dictMovimientos)
+
+@app.route('/movimiento/<int:movimiento_id>')
+def movimiento(movimiento_id):
+    dictMovimiento= query_db('select * from Movimientos where id=?',[movimiento_id],one=True)
+    dictPokemonsHabilidad= query_db('select * from movimiento_pokemons_view where id=?',[movimiento_id])
+    dictPokemonsHabilidad= cambiarFormatoId(dictPokemonsHabilidad,"pokemon_id")
+    dictTipos= aplanarTipos(query_db('select * from pokemon_tipos_view'))
+
+    return render_template('movimiento.html', movimiento=dictMovimiento, pokemons=dictPokemonsHabilidad,tipos=dictTipos)
 
 @app.route('/encuentros')
 def encuentros():
@@ -98,6 +122,7 @@ def encuentros():
                 print(pokemon_id)
                 datos_encuentros[lugar]['id'] = dictPokemon[0]['id']
     return render_template('encuentros.html', lugares=dictLugares, cabeceras=cabeceras_tabla, datos=datos_encuentros)
+
 ###################################################################
 # DATABASE
 
@@ -182,13 +207,14 @@ def calcularGeneros(genero):
 
     return [male,female]
 
-def cambiarFormatoId(dictPokemon):
+def cambiarFormatoId(dictPokemon,nombre_id):
     dictPokemonActualizado = []
     for pokemon in dictPokemon:
-        pokemon["id"] = str(pokemon["id"]).zfill(3)
+        pokemon[nombre_id] = str(pokemon[nombre_id]).zfill(3)
         dictPokemonActualizado.append(pokemon)
 
     return dictPokemonActualizado
+
 
 def aplanarTipos(tipos):
     tiposPokemon = {}

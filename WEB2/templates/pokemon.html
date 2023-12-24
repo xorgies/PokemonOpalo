@@ -83,7 +83,7 @@
                         <tbody>
                             {% for habilidad in habilidades %}
                                 <tr>
-                                    <td>{{habilidad["nombre"]}}</td>
+                                    <td data-bs-toggle="tooltip" title="{{habilidad["descripcion"]}}"><a href="{{url_for('habilidad',habilidad_id=habilidad['habilidad_id'])}}">{{habilidad["nombre_esp"]}}</a></td>
                                     <td>{{habilidad["tipo"]}}</td>
                                 </tr>
                             {% endfor %}
@@ -145,12 +145,31 @@
                     <thead>
                         <th>Nivel aprender</th>
                         <th>Movimiento</th>
+                        <th>Tipo</th>
+                        <th>Clase</th>
                     </thead>
                     <tbody>
                         {% for movimiento in movimientos %}
                             <tr>
                                 <td>{{movimiento["nivel_aprender"]}}</td>
-                                <td>{{movimiento["nombre"]}}</td>
+                                <!-- El puto victor dijo de hacerlo asi de feo. -->
+                                <td data-bs-toggle="tooltip" data-bs-html="true" title="Potencia: 
+                                    {% if movimiento['potencia'] == 0 %}
+                                    ---
+                                    {% elif movimiento['potencia'] == 1 %}
+                                    ???
+                                    {% else %}
+                                    {{movimiento['potencia']}}
+                                    {% endif %}
+                                    <br>Precision: 
+                                    {% if movimiento['precision'] == 0 %}
+                                    ---
+                                    {% else %}
+                                    {{movimiento['precision']}}
+                                    {% endif %}
+                                    <br>PP: {{movimiento['pp']}}<br>Descripcion: {{movimiento['descripcion']}}"><a href="{{url_for('movimiento',movimiento_id=movimiento['movimiento_id'])}}">{{movimiento["nombre_esp"]}}</a></td>
+                                <td><img src="/static/img/tipos/{{movimiento["tipo"]}}.png"></td>
+                                <td><img src="/static/img/tipos/{{movimiento["clase"]}}.gif"></td>
                             </tr>
                         {% endfor %}
                     </tbody>

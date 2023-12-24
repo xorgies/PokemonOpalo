@@ -1,0 +1,46 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>{{habilidad['nombre']}} - {{habilidad['nombre_esp']}}</h1>
+    <div class="card">
+        <div class="card-body">
+            <fieldset>
+                <legend>Descripcion</legend>
+                <p>{{habilidad["descripcion"]}}</p>
+            </fieldset>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <fieldset>
+                <legend>Pokemons</legend>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <th class="text-center">Numero</th>
+                        <th class="text-center">Imagen</th>
+                        <th class="text-center">Nombre</th>
+                        <th class="text-center">Tipos</th>
+                        <th class="text-center">Tipo habilidad</th>
+                    </thead>
+                    <tbody>
+                        {% for pokemon in pokemons %}
+                            <tr>
+                                <td class="text-center">{{pokemon["pokemon_id"]}}</td>
+                                <td class="text-center"><a href="{{url_for('pokemon',pokemon_id=pokemon['pokemon_id'])}}"><img class="pokemon-img-tabla lazy" loading="lazy" src="/static/img/{{pokemon['pokemon_id']}}.png"></a></td>
+                                <td class="text-center"><a href="{{url_for('pokemon',pokemon_id=pokemon['pokemon_id'])}}">{{pokemon["name"]}}</a></td>
+                                <td class="text-center">
+                                    {% for tipoPokemon in tipos[pokemon["pokemon_id"]] %}
+                                    <a href="{{url_for('tipos',tipo=tipoPokemon)}}"><img class="lazy" src="/static/img/tipos/{{tipoPokemon}}.png"></a>
+                                    {% endfor %}
+                                </td>
+                                <td class="text-center">{{pokemon["tipo"]}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </fieldset>
+        </div>
+    </div>
+</div>
+{% endblock %}
