@@ -91,6 +91,16 @@ def lista_movimientos():
     dictMovimientos= query_db('select * from Movimientos')
     return render_template('movimientos_lista.html', movimientos=dictMovimientos)
 
+@app.route('/movimiento/<int:movimiento_id>')
+def movimiento(movimiento_id):
+    dictMovimiento= query_db('select * from Movimientos where id=?',[movimiento_id],one=True)
+    dictPokemonsHabilidad= query_db('select * from movimiento_pokemons_view where id=?',[movimiento_id])
+    dictPokemonsHabilidad= cambiarFormatoId(dictPokemonsHabilidad,"pokemon_id")
+    dictTipos= aplanarTipos(query_db('select * from pokemon_tipos_view'))
+
+    return render_template('movimiento.html', movimiento=dictMovimiento, pokemons=dictPokemonsHabilidad,tipos=dictTipos)
+
+
 ###################################################################
 # DATABASE
 

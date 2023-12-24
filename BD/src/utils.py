@@ -346,7 +346,7 @@ def crearVistas(conexion):
     # pokemon_movimientos_view  
     try:
         conexion.execute(f"""create view pokemon_movimientos_view as
-                                select p.id,m.nombre,pm.nivel_aprender,m.nombre_esp,m.potencia,m.tipo,m.clase,m.precision,m.pp,m.descripcion
+                                select p.id,m.id as movimiento_id,m.nombre,pm.nivel_aprender,m.nombre_esp,m.potencia,m.tipo,m.clase,m.precision,m.pp,m.descripcion
                                 from {nombreTablaPokemon} p,{nombreTablaMovimientosPokemon} pm,{nombreTablaMovimientos} m
                                 where p.id = pm.pokemon_id
                                     and m.id = pm.movimiento_id

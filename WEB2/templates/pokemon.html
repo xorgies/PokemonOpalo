@@ -167,7 +167,7 @@
                                     {% else %}
                                     {{movimiento['precision']}}
                                     {% endif %}
-                                    <br>PP: {{movimiento['pp']}}<br>Descripcion: {{movimiento['descripcion']}}">{{movimiento["nombre_esp"]}}</td>
+                                    <br>PP: {{movimiento['pp']}}<br>Descripcion: {{movimiento['descripcion']}}"><a href="{{url_for('movimiento',movimiento_id=movimiento['movimiento_id'])}}">{{movimiento["nombre_esp"]}}</a></td>
                                 <td><img src="/static/img/tipos/{{movimiento["tipo"]}}.png"></td>
                                 <td><img src="/static/img/tipos/{{movimiento["clase"]}}.gif"></td>
                             </tr>

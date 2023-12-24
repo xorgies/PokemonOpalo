@@ -18,8 +18,8 @@
                     {% for movimiento in movimientos %}
                         <tr>
                             <!-- TODO: hacer enlaces al detalle -->
-                            <td class="text-center">{{movimiento["nombre"]}}</td>
-                            <td class="text-center">{{movimiento["nombre_esp"]}}</td>
+                            <td class="text-center"><a href="{{url_for('movimiento',movimiento_id=movimiento['id'])}}">{{movimiento["nombre"]}}</a></td>
+                            <td class="text-center"><a href="{{url_for('movimiento',movimiento_id=movimiento['id'])}}">{{movimiento["nombre_esp"]}}</a></td>
                             <!-- TODO: hacer lista filtrada por tipo -->
                             <td class="text-center"><img src="/static/img/tipos/{{movimiento["tipo"]}}.png"></td>
                             <!-- TODO: hacer lista filtrada por clase -->
