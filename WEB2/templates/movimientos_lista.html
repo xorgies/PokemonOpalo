@@ -1,0 +1,34 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Lista Movimientos</h1>
+    <div class="card">
+        <div class="card-body">
+            <table id="dataTable" class="table table-dark table-striped table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th class="text-center">Nombre</th>
+                        <th class="text-center">Nombre español</th>
+                        <th class="text-center">Tipo</th>
+                        <th class="text-center">Clase</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for movimiento in movimientos %}
+                        <tr>
+                            <!-- TODO: hacer enlaces al detalle -->
+                            <td class="text-center">{{movimiento["nombre"]}}</td>
+                            <td class="text-center">{{movimiento["nombre_esp"]}}</td>
+                            <!-- TODO: hacer lista filtrada por tipo -->
+                            <td class="text-center"><img src="/static/img/tipos/{{movimiento["tipo"]}}.png"></td>
+                            <!-- TODO: hacer lista filtrada por clase -->
+                            <td class="text-center"><img src="/static/img/tipos/{{movimiento["clase"]}}.gif"></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

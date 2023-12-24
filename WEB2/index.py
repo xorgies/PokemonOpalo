@@ -71,6 +71,17 @@ def tipos(tipo):
     lista_pokemon= cambiarFormatoId(lista_pokemon)
     dictTipos= aplanarTipos(query_db('select * from pokemon_tipos_view'))
     return render_template('lista_filtrada.html', lista_pokemon=lista_pokemon, titulo=tipo, tipos=dictTipos)
+
+@app.route('/habilidadesLista')
+def lista_habilidades():
+    dictHabilidades= query_db('select * from Habilidades')
+    return render_template('habilidades_lista.html', habilidades=dictHabilidades)
+
+@app.route('/movimientosLista')
+def lista_movimientos():
+    dictMovimientos= query_db('select * from Movimientos')
+    return render_template('movimientos_lista.html', movimientos=dictMovimientos)
+
 ###################################################################
 # DATABASE
 

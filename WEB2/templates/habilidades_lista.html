@@ -1,0 +1,30 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Lista Habilidades</h1>
+    <div class="card">
+        <div class="card-body">
+            <table id="dataTable" class="table table-dark table-striped table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th class="text-center">Nombre</th>
+                        <th class="text-center">Nombre español</th>
+                        <th class="text-center">Descripción</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for habilidad in habilidades %}
+                        <tr>
+                            <!-- TODO: hacer enlaces al detalle -->
+                            <td class="text-center">{{habilidad["nombre"]}}</td>
+                            <td class="text-center">{{habilidad["nombre_esp"]}}</td>
+                            <td class="text-center">{{habilidad["descripcion"]}}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
