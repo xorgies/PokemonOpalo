@@ -367,6 +367,18 @@ def crearVistas(conexion):
     except sqlite3.OperationalError:
         print("La vista pokemon_habilidades_view ya existe")
 
+    # habilidad_pokemons_view  
+    try:
+        conexion.execute(f"""create view habilidad_pokemons_view as
+                                select h.id,p.name,ph.tipo,p.id as pokemon_id
+                                from {nombreTablaPokemon} p,{nombreTablaHabilidadesPokemon} ph,{nombreTablaHabilidades} h
+                                where p.id = ph.pokemon_id
+                                    and h.id = ph.habilidad_id
+                            """)
+        print("Se creo la vista habilidad_pokemons_view")                        
+    except sqlite3.OperationalError:
+        print("La vista habilidad_pokemons_view ya existe")
+
     # encuentros_lugares_view  
     try:
         conexion.execute(f"""create view encuentros_lugares_view as

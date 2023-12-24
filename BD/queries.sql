@@ -43,6 +43,12 @@ from Pokemon p,Pokemon_Habilidades ph,Habilidades h
 where p.id = ph.pokemon_id
     and h.id = ph.habilidad_id;
 
+create view habilidad_pokemons_view as
+select h.id,p.name,ph.tipo,p.id as pokemon_id
+from Pokemon p,Pokemon_Habilidades ph,Habilidades h
+where p.id = ph.pokemon_id
+    and h.id = ph.habilidad_id;
+
 create view encuentros_lugares_view as
 select e.id, e.pokemon_id, e.nombre, e.nivel_min, e.nivel_max, l.nombre as nombre_lugar from Encuentros e, Lugares l where e.lugar_id = l.id;
 
