@@ -1,0 +1,18 @@
+{% extends 'layout.html' %}
+{% from "includes/macros.html" import accordion_entry, datatable %}
+{% block content %}
+    <div class="container">
+        <h1>Encuentros</h1>
+        <div class="card">
+            <div class="card-body">
+                <div class="accordion accordion-flush" id="lugares">
+                    {% for lugar in lugares %}
+                        {% call accordion_entry(id_parent='lugares', id_count=loop.index, title=lugar['nombre']) %}
+                            {{ datatable(cabeceras,datos) }}
+                        {% endcall %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

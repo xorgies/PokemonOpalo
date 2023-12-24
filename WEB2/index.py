@@ -100,6 +100,28 @@ def movimiento(movimiento_id):
 
     return render_template('movimiento.html', movimiento=dictMovimiento, pokemons=dictPokemonsHabilidad,tipos=dictTipos)
 
+@app.route('/encuentros')
+def encuentros():
+    dictLugares = query_db('select distinct nombre from encuentros_lugares_view')
+    cabeceras_tabla = ['Numero', 'Imagen', 'Nombre', 'Tipos', 'Nivel minimo', 'Nivel maximo', 'Lugar de encuentro']
+    datos_encuentros = {}
+    for lugar in dictLugares:
+        lugar = lugar['nombre']
+        datos_encuentros[lugar] = {}
+        lista_pokemon_id = query_db('select distinct pokemon_id from encuentros_lugares_view where nombre = ?', [lugar])
+        for pokemon_id in lista_pokemon_id:
+            pokemon_id = pokemon_id['pokemon_id']
+            lista_lugares_aparicion = query_db('select distinct nombre_lugar from encuentros_lugares_view where nombre = ? and pokemon_id = ?', [lugar, pokemon_id])
+            for lugar_aparicion in lista_lugares_aparicion:
+                lugar_aparicion = lugar_aparicion['nombre_lugar']
+                nivel_min = query_db('select min(nivel_min) as min from encuentros_lugares_view where nombre = ? and pokemon_id = ? and nombre_lugar = ?', [lugar, pokemon_id, lugar_aparicion], True)
+                nivel_max = query_db('select max(nivel_max) as max from encuentros_lugares_view where nombre = ? and pokemon_id = ? and nombre_lugar = ?', [lugar, pokemon_id, lugar_aparicion], True)
+                dictPokemon= query_db('select id,name from Pokemon where id = ?', [pokemon_id])
+                dictPokemon= cambiarFormatoId(dictPokemon)
+                dictTipos= aplanarTipos(query_db('select * from pokemon_tipos_view where id = ?', [pokemon_id]))
+                print(pokemon_id)
+                datos_encuentros[lugar]['id'] = dictPokemon[0]['id']
+    return render_template('encuentros.html', lugares=dictLugares, cabeceras=cabeceras_tabla, datos=datos_encuentros)
 
 ###################################################################
 # DATABASE
