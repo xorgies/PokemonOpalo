@@ -1,5 +1,5 @@
 # Pokemon Opalo
-proyecto para leer los ficheros txt y convertirlos en json para luego mostrarlos en una web.
+Proyecto para leer los ficheros txt y convertirlos en json para luego mostrarlos en una web.
 Puedes ver la web en https://pokemonopalodex.onrender.com/
 
 ## JsonTransformer

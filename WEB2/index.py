@@ -1,8 +1,6 @@
 from flask import Flask, render_template
 import sqlite3
 from flask import g
-import os
-import json
 
 app = Flask(__name__)
 
@@ -69,8 +67,6 @@ def tipos(tipo):
             lista_tipos_str += ','
     lista_tipos_str += ')'
     lista_pokemon = query_db('select id, name from Pokemon where id in '+lista_tipos_str)
-    # TODO: buscar imagen mas grande para los tipos y llamarlos {tipo}_xl.png
-    #tipo = '<div id="div-img-tipo-filtrado"><img class="img-tipo-filtrado" id="'+tipo+'"></div>' #src="/static/img/tipos/'+tipo+'.png">'
     tipo = '<img class="img-tipo-filtrado img-center" src="/static/img/tipos/'+tipo+'_xl.png">'
     lista_pokemon= cambiarFormatoId(lista_pokemon)
     dictTipos= aplanarTipos(query_db('select * from pokemon_tipos_view'))
