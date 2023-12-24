@@ -6,3 +6,4 @@ JsonTransformer/json/*.json
 pokedex.session.sql
 WEB/DB/database.sqlite3
 JsonTransformer/src/pruebas.py
+JsonTransformer/json/pokemon.json
