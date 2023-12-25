@@ -92,10 +92,14 @@
                     <td class="text-center">{{pokemon['id']}}</td>
                     <td class="text-center"><a href="{{url_for('pokemon',pokemon_id=pokemon['id'])}}"><img class="pokemon-img-tabla lazy" loading="lazy" src="/static/img/{{pokemon['id']}}.png"></a></td>
                     <td class="text-center"><a href="{{url_for('pokemon',pokemon_id=pokemon['id'])}}">{{pokemon['name']}}</a></td>
-                    <td class="text-center">loop.index</td>
-                    <td class="text-center">loop.index</td>
-                    <td class="text-center">loop.index</td>
-                    <td class="text-center">loop.index</td>
+                    <td class="text-center">
+                        {% for tipo in pokemon['tipos'] %}
+                        <a href="{{url_for('tipos',tipo=tipoPokemon)}}"><img class="lazy" src="/static/img/tipos/{{tipo}}.png"></a>
+                        {% endfor %}
+                    </td>
+                    <td class="text-center">{{pokemon['nivel_min']}}</td>
+                    <td class="text-center">{{pokemon['nivel_max']}}</td>
+                    <td class="text-center">{{pokemon['lugar_aparicion']}}</td>
                 </tr>
             {% endfor %}
         </tbody>
