@@ -8,7 +8,7 @@
                 <div class="accordion accordion-flush" id="lugares">
                     {% for lugar in lugares %}
                         {% call accordion_entry(id_parent='lugares', id_count=loop.index, title=lugar['nombre']) %}
-                            {{ datatable(cabeceras,datos) }}
+                            {{ datatable(cabeceras,datos,lugar['nombre']) }}
                         {% endcall %}
                     {% endfor %}
                 </div>

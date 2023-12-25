@@ -136,7 +136,7 @@ def encuentros():
     datos_encuentros = {}
     for lugar in dictLugares:
         lugar = lugar['nombre']
-        datos_encuentros[lugar] = {}
+        datos_encuentros[lugar] = []
         lista_pokemon_id = query_db('select distinct pokemon_id from encuentros_lugares_view where nombre = ?', [lugar])
         for pokemon_id in lista_pokemon_id:
             pokemon_id = pokemon_id['pokemon_id']
@@ -148,8 +148,9 @@ def encuentros():
                 dictPokemon= query_db('select id,name from Pokemon where id = ?', [pokemon_id])
                 dictPokemon= cambiarFormatoId(dictPokemon,'id')
                 dictTipos= aplanarTipos(query_db('select * from pokemon_tipos_view where id = ?', [pokemon_id]))
-                print(pokemon_id)
-                datos_encuentros[lugar]['id'] = dictPokemon[0]['id']
+                for pokemon in dictPokemon:
+                    datos_encuentros[lugar].append(pokemon)
+    #print(datos_encuentros['Pueblo Brisa'])
     return render_template('encuentros.html', lugares=dictLugares, cabeceras=cabeceras_tabla, datos=datos_encuentros)
 
 ###################################################################
