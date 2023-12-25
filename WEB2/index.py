@@ -146,7 +146,7 @@ def encuentros():
                 nivel_min = query_db('select min(nivel_min) as min from encuentros_lugares_view where nombre = ? and pokemon_id = ? and nombre_lugar = ?', [lugar, pokemon_id, lugar_aparicion], True)
                 nivel_max = query_db('select max(nivel_max) as max from encuentros_lugares_view where nombre = ? and pokemon_id = ? and nombre_lugar = ?', [lugar, pokemon_id, lugar_aparicion], True)
                 dictPokemon= query_db('select id,name from Pokemon where id = ?', [pokemon_id])
-                dictPokemon= cambiarFormatoId(dictPokemon)
+                dictPokemon= cambiarFormatoId(dictPokemon,'id')
                 dictTipos= aplanarTipos(query_db('select * from pokemon_tipos_view where id = ?', [pokemon_id]))
                 print(pokemon_id)
                 datos_encuentros[lugar]['id'] = dictPokemon[0]['id']
