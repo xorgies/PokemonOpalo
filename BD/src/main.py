@@ -7,7 +7,7 @@ rutaBD="WEB2/static/DB/database.sqlite3"
 try:
     os.remove(rutaBD)
 except OSError:
-    pass
+    print('BD bloqueada')
 
 conexion=sqlite3.connect(rutaBD)
 

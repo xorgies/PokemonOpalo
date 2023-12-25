@@ -1,5 +1,4 @@
 General
-- tildes en los encuentros no se muestran bien
 - pagina de encuentros
 
 movimientos_lista.html

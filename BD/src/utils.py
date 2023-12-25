@@ -324,7 +324,7 @@ def rellenarLugares(conexion):
                 print("Ya existe la fila")
 
 def rellenarEncuentros(conexion):
-    with open("JsonTransformer/json/encuentros.json",encoding='ISO-8859-1') as file:
+    with open("JsonTransformer/json/encuentros.json",encoding='utf-8') as file:
         data = json.load(file)
         for encuentro in data['encuentros']:
             try:
