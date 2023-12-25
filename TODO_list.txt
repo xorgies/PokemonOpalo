@@ -1,0 +1,13 @@
+General
+- tildes en los encuentros no se muestran bien
+- pagina de encuentros
+
+movimientos_lista.html
+- hacer enlaces al detalle
+- hacer lista filtrada por tipo
+- hacer lista filtrada por clase
+
+
+pokemon.html
+- bootstrap tiene clase de flex https://getbootstrap.com/docs/5.0/utilities/flex/
+- el pokemon que está mostrandose tiene enlace
