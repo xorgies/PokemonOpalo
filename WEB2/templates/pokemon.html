@@ -175,15 +175,35 @@
                     </tbody>
                 </table>
                 {% if movimientosHuevo|length > 0 %}
+                <h2>Movimientos huevo</h2>
                 <table class="table table-striped table-hover">
                     <thead>
-                        <th>Movimientos Huevo</th>
+                        <th>Movimiento</th>
+                        <th>Tipo</th>
+                        <th>Clase</th>
                     </thead>
                     <tbody>
                         {% for movimientoHuevo in movimientosHuevo %}
-                            <tr>
-                                <td>{{movimientoHuevo}}</td>
-                            </tr>
+                        <tr>
+                            <!-- El puto victor dijo de hacerlo asi de feo. -->
+                            <td data-bs-toggle="tooltip" data-bs-html="true" title="Potencia: 
+                                {% if movimientoHuevo['potencia'] == 0 %}
+                                ---
+                                {% elif movimientoHuevo['potencia'] == 1 %}
+                                ???
+                                {% else %}
+                                {{movimientoHuevo['potencia']}}
+                                {% endif %}
+                                <br>Precision: 
+                                {% if movimientoHuevo['precision'] == 0 %}
+                                ---
+                                {% else %}
+                                {{movimientoHuevo['precision']}}
+                                {% endif %}
+                                <br>PP: {{movimientoHuevo['pp']}}<br>Descripcion: {{movimientoHuevo['descripcion']}}"><a href="{{url_for('movimiento',movimiento_id=movimientoHuevo['movimiento_id'])}}">{{movimientoHuevo["nombre_esp"]}}</a></td>
+                            <td><img src="/static/img/tipos/{{movimientoHuevo["tipo"]}}.png"></td>
+                            <td><img src="/static/img/tipos/{{movimientoHuevo["clase"]}}.gif"></td>
+                        </tr>
                         {% endfor %}
                     </tbody>
                 </table>
