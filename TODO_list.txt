@@ -1,5 +1,4 @@
 General
-- pagina de encuentros
 
 movimientos_lista.html
 - hacer enlaces al detalle
