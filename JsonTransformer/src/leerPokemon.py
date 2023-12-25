@@ -52,7 +52,7 @@ def leerFicheroPokemon(ruta,nombreFichero,rutaJson):
         primerPokemon = True
         for linea in f:
             linea = linea.replace("\n","")
-            if '[' in linea:
+            if '[' in linea :
                 if not primerPokemon:
                     datos['pokemons'].append(pokemon)
                     pokemon = {}
@@ -123,6 +123,8 @@ def leerFicheroPokemon(ruta,nombreFichero,rutaJson):
                             indiceAux = 1
                 elif 'BaseEXP' not in nombre and 'BattlerAltitude' not in nombre and 'BattlerEnemyY' not in nombre and 'BattlerPlayerY' not in nombre and 'EffortPoints' not in nombre:
                     pokemon[nombre]=valor
+        # meter el ultimo pokemon
+        datos['pokemons'].append(pokemon)
 
     with open(rutaJson+ficheroJsonPokemon, "w",encoding='utf-8') as write_file:
         json.dump(datos, write_file, indent=4, sort_keys=True,ensure_ascii=False)
