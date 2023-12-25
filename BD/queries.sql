@@ -37,6 +37,12 @@ from Pokemon p,Pokemon_Movimientos pm,Movimientos m
 where p.id = pm.pokemon_id
     and m.id = pm.movimiento_id;
 
+create view pokemon_movimientos_huevo_view as
+select p.id,m.id as movimiento_id,m.nombre,m.nombre_esp,m.potencia,m.tipo,m.clase,m.precision,m.pp,m.descripcion
+from Pokemon p,Pokemon_Movimientos_Huevo pmh,Movimientos m
+where p.id = pmh.pokemon_id
+    and m.id = pmh.movimiento_id;
+
 create view pokemon_habilidades_view as
 select p.id,h.nombre,ph.tipo,h.id as habilidad_id,h.nombre_esp,h.descripcion
 from Pokemon p,Pokemon_Habilidades ph,Habilidades h
@@ -54,6 +60,12 @@ select m.id,p.name,pm.nivel_aprender,p.id as pokemon_id
 from Pokemon p,Pokemon_Movimientos pm,Movimientos m
 where p.id = pm.pokemon_id
     and m.id = pm.movimiento_id;
+
+create view movimiento_huevo_pokemons_view as
+select m.id,p.name,p.id as pokemon_id
+from Pokemon p,Pokemon_Movimientos pmh,Movimientos m
+where p.id = pmh.pokemon_id
+    and m.id = pmh.movimiento_id;
 
 create view encuentros_lugares_view as
 select e.id, e.pokemon_id, e.nombre, e.nivel_min, e.nivel_max, l.nombre as nombre_lugar from Encuentros e, Lugares l where e.lugar_id = l.id;

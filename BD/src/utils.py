@@ -9,6 +9,7 @@ nombreTablaTipos="Tipos"
 nombreTablaTiposPokemon="Pokemon_Tipos"
 nombreTablaMovimientos="Movimientos"
 nombreTablaMovimientosPokemon="Pokemon_Movimientos"
+nombreTablaMovimientosHuevoPokemon="Pokemon_Movimientos_Huevo"
 nombreTablaEvoluciones="Evoluciones"
 nombreTablaLugares="Lugares"
 nombreTablaEncuentros="Encuentros"
@@ -159,6 +160,22 @@ def crearTablas(conexion):
     except sqlite3.OperationalError:
         print("La tabla Pokemon_Movimientos ya existe")
 
+    # Pokemon_Movimientos_Huevo
+    try:
+        conexion.execute(f"""create table {nombreTablaMovimientosHuevoPokemon} (
+                                pokemon_id integer,
+                                movimiento_id integer,
+                                CONSTRAINT fk_pokemon
+                                    FOREIGN KEY (pokemon_id)
+                                    REFERENCES {nombreTablaPokemon}(id),
+                                CONSTRAINT fk_movimiento
+                                    FOREIGN KEY (movimiento_id)
+                                    REFERENCES {nombreTablaMovimientos}(id)
+                            )""")
+        print("Se creo la tabla Pokemon_Movimientos_Huevo")                        
+    except sqlite3.OperationalError:
+        print("La tabla Pokemon_Movimientos_Huevo ya existe")
+    
     # Evoluciones
     try:
         conexion.execute(f"""create table {nombreTablaEvoluciones} (
@@ -275,6 +292,15 @@ def rellenarMovimientos(conexion):
                 conexion.commit()
             except:
                 print("Ya existe la fila")
+    
+    with open("JsonTransformer/json/movimientos_huevo_pokemon.json") as file:
+        data = json.load(file)
+        for movimiento_huevo_pokemon in data['movimientos']:
+            try:
+                conexion.execute("insert into "+nombreTablaMovimientosHuevoPokemon+"(pokemon_id,movimiento_id) values (?,?)", (movimiento_huevo_pokemon['pokemon_id'],movimiento_huevo_pokemon['movimiento_id']))
+                conexion.commit()
+            except:
+                print("Ya existe la fila")
 
 def rellenarEvoluciones(conexion):
     with open("JsonTransformer/json/evoluciones_pokemon.json") as file:
@@ -355,6 +381,18 @@ def crearVistas(conexion):
     except sqlite3.OperationalError:
         print("La vista pokemon_movimientos_view ya existe")
 
+    # pokemon_movimientos_huevo_view  
+    try:
+        conexion.execute(f"""create view pokemon_movimientos_huevo_view as
+                                select p.id,m.id as movimiento_id,m.nombre,m.nombre_esp,m.potencia,m.tipo,m.clase,m.precision,m.pp,m.descripcion
+                                from {nombreTablaPokemon} p,{nombreTablaMovimientosHuevoPokemon} pmh,{nombreTablaMovimientos} m
+                                where p.id = pmh.pokemon_id
+                                    and m.id = pmh.movimiento_id
+                            """)
+        print("Se creo la vista pokemon_movimientos_huevo_view")                        
+    except sqlite3.OperationalError:
+        print("La vista pokemon_movimientos_huevo_view ya existe")
+
     # movimiento_pokemons_view  
     try:
         conexion.execute(f"""create view movimiento_pokemons_view as
@@ -363,9 +401,21 @@ def crearVistas(conexion):
                                 where p.id = pm.pokemon_id
                                     and m.id = pm.movimiento_id
                             """)
-        print("Se creo la vista pokemon_movimientos_view")                        
+        print("Se creo la vista movimiento_pokemons_view")                        
     except sqlite3.OperationalError:
-        print("La vista pokemon_movimientos_view ya existe")
+        print("La vista movimiento_pokemons_view ya existe")
+    
+    # movimiento_huevo_pokemons_view  
+    try:
+        conexion.execute(f"""create view movimiento_huevo_pokemons_view as
+                                select m.id,p.name,p.id as pokemon_id
+                                from {nombreTablaPokemon} p,{nombreTablaMovimientosHuevoPokemon} pmh,{nombreTablaMovimientos} m
+                                where p.id = pmh.pokemon_id
+                                    and m.id = pmh.movimiento_id
+                            """)
+        print("Se creo la vista movimiento_huevo_pokemons_view")                        
+    except sqlite3.OperationalError:
+        print("La vista movimiento_huevo_pokemons_view ya existe")
     
     # pokemon_habilidades_view  
     try:

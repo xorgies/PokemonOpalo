@@ -9,6 +9,7 @@ ficheroJsonTipos="tipos.json"
 ficheroJsonTiposPokemon="tipos_pokemon.json"
 ficheroJsonMovimientos="movimientos.json"
 ficheroJsonMovimientosPokemon="movimientos_pokemon.json"
+ficheroJsonMovimientosHuevoPokemon="movimientos_huevo_pokemon.json"
 ficheroJsonPokemonsId="pokemons_id.json"
 ficheroJsonEvolucionesPokemon="evoluciones_pokemon.json"
 
@@ -38,6 +39,9 @@ def leerFicheroPokemon(ruta,nombreFichero,rutaJson):
 
     movimientos_pokemon = {}
     movimientos_pokemon['movimientos'] = []
+
+    movimientos_pokemon_huevo = {}
+    movimientos_pokemon_huevo['movimientos'] = []
 
     evoluciones_pokemon = {}
     evoluciones_pokemon['evoluciones'] = []
@@ -92,6 +96,11 @@ def leerFicheroPokemon(ruta,nombreFichero,rutaJson):
                     for (nivel, movimiento) in convertirArrayMovimientos(movimientosSplit):
                         movimientoId = buscarIdMovientos(dictMovimientos,movimiento)
                         movimientos_pokemon['movimientos'].append({'pokemon_id':pokemon_id,'movimiento_id':int(movimientoId),'nivel_aprender':int(nivel)})
+                elif 'EggMoves' == nombre:
+                    movimientosHuevoSplit = valor.split(',')
+                    for movimientoHuevo in movimientosHuevoSplit:
+                        movimientoId = buscarIdMovientos(dictMovimientos,movimientoHuevo)
+                        movimientos_pokemon_huevo['movimientos'].append({'pokemon_id':pokemon_id,'movimiento_id':int(movimientoId)})
                 elif 'InternalName' == nombre:
                     pokemons[pokemon_id] = valor
                 elif 'Evolutions' == nombre:
@@ -132,6 +141,9 @@ def leerFicheroPokemon(ruta,nombreFichero,rutaJson):
     
     with open(rutaJson+ficheroJsonMovimientosPokemon, "w",encoding='utf-8') as write_file:
         json.dump(movimientos_pokemon, write_file, indent=4, sort_keys=True)
+
+    with open(rutaJson+ficheroJsonMovimientosHuevoPokemon, "w",encoding='utf-8') as write_file:
+        json.dump(movimientos_pokemon_huevo, write_file, indent=4, sort_keys=True)
 
     with open(rutaJson+ficheroJsonPokemonsId, "w",encoding='utf-8') as write_file:
         json.dump(pokemons, write_file, indent=4, sort_keys=True,ensure_ascii=False)
