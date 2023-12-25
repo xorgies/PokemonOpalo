@@ -205,7 +205,7 @@
                                 <br>PP: {{movimientoHuevo['pp']}}<br>Descripcion: {{movimientoHuevo['descripcion']}}"><a href="{{url_for('movimiento',movimiento_id=movimientoHuevo['movimiento_id'])}}">{{movimientoHuevo["nombre_esp"]}}</a></td>
                             <td><img src="/static/img/tipos/{{movimientoHuevo["tipo"]}}.png"></td>
                             <td><img src="/static/img/tipos/{{movimientoHuevo["clase"]}}.gif"></td>
-                            <td><a href="{{url_for('movimientoHuevoPadre',movimiento_id=movimientoHuevo['movimiento_id'],grupos_huevo=gruposHuevo)}}"><i class="bi bi-eye"></i></a></td>
+                            <td><a href="{{url_for('movimientoHuevoPadre',nombre_pokemon=pokemon['name'],movimiento_id=movimientoHuevo['movimiento_id'],grupos_huevo=gruposHuevo)}}"><i class="bi bi-eye"></i></a></td>
                         </tr>
                         {% endfor %}
                     </tbody>

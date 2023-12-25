@@ -1,0 +1,43 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>{{nombrePokemon}} - Movimiento huevo Padres</h1>
+    <div class="card">
+        <div class="card-body">
+            <table id="dataTable" class="table table-dark table-striped table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th class="text-center">Numero</th>
+                        <th class="text-center">Imagen</th>
+                        <th class="text-center">Nombre</th>
+                        <th class="text-center">Tipos</th>
+                        <th class="text-center">Aprende</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    {% for pokemon in lista_pokemon %}
+                        <tr>
+                            <td class="text-center">{{pokemon["id"]}}</td>
+                            <td class="text-center"><a href="{{url_for('pokemon',pokemon_id=pokemon['id'])}}"><img class="pokemon-img-tabla lazy" src="/static/img/{{pokemon['id']}}.png"></a></td>
+                            <td class="text-center"><a href="{{url_for('pokemon',pokemon_id=pokemon['id'])}}">{{pokemon["name"]}}</a></td>
+                            <td class="text-center">
+                                {% for tipoPokemon in tipos[pokemon["id"]] %}
+                                <a href="{{url_for('tipos',tipo=tipoPokemon)}}"><img class="lazy" src="/static/img/tipos/{{tipoPokemon}}.png"></a>
+                                {% endfor %}
+                            </td>
+                            <td class="text-center">
+                                {% if pokemon['nivel_aprender'] == 'egg' %}
+                                    <img src="/static/img/icons/egg.png">
+                                {% else %}
+                                    {{pokemon['nivel_aprender']}}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

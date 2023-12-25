@@ -100,15 +100,15 @@ def movimiento(movimiento_id):
 
     return render_template('movimiento.html', movimiento=dictMovimiento, pokemons=dictPokemonsHabilidad,tipos=dictTipos)
 
-@app.route('/movimientoHuevoPadres/<int:movimiento_id>/<string:grupos_huevo>')
-def movimientoHuevoPadre(movimiento_id,grupos_huevo):
+@app.route('/movimientoHuevoPadres/<string:nombre_pokemon>/<int:movimiento_id>/<string:grupos_huevo>')
+def movimientoHuevoPadre(nombre_pokemon,movimiento_id,grupos_huevo):
     tipo="Padres"
     gruposHuevoWhere = "and ("
     for grupo_huevo in grupos_huevo.split(","):
         gruposHuevoWhere+="p.compatibility like '%%"+grupo_huevo+"%%' or "
     gruposHuevoWhere = gruposHuevoWhere[:-3]
     gruposHuevoWhere +=")"
-    lista_pokemon= query_db("""select p.id,p.name,p.compatibility, m.nombre_esp 
+    lista_pokemon= query_db("""select p.id,p.name,p.compatibility, m.nombre_esp, pm.nivel_aprender 
                                     FROM Pokemon p, Pokemon_Movimientos pm, Movimientos m
                                     WHERE p.id = pm.pokemon_id
                                         and m.id = pm.movimiento_id
@@ -116,7 +116,7 @@ def movimientoHuevoPadre(movimiento_id,grupos_huevo):
                                 """+gruposHuevoWhere+"""
                                         and m.id = ?
                                 UNION
-                                select p.id,p.name,p.compatibility, m.nombre_esp 
+                                select p.id,p.name,p.compatibility, m.nombre_esp, 'egg' as 'nivel_aprender' 
                                 FROM Pokemon p, Pokemon_Movimientos_Huevo pmh, Movimientos m
                                 WHERE p.id = pmh.pokemon_id
                                     and m.id = pmh.movimiento_id
@@ -127,8 +127,7 @@ def movimientoHuevoPadre(movimiento_id,grupos_huevo):
                                  """,[movimiento_id,movimiento_id])
     lista_pokemon= cambiarFormatoId(lista_pokemon,"id")
     dictTipos= aplanarTipos(query_db('select * from pokemon_tipos_view'))
-    #return render_template('movimientoHuevoPadres.html', pokemons=dictPokemonsPadres,tipos=dictTipos)
-    return render_template('lista_filtrada.html', lista_pokemon=lista_pokemon, titulo=tipo, tipos=dictTipos)
+    return render_template('movimientoHuevoPadres.html', lista_pokemon=lista_pokemon, titulo=tipo, tipos=dictTipos, nombrePokemon=nombre_pokemon)
 
 @app.route('/encuentros')
 def encuentros():
