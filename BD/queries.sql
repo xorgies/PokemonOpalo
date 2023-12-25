@@ -84,3 +84,28 @@ select max(
             max(pe.def_sp)
         )
 FROM Pokemon_Estadisticas pe;
+
+
+-- buscar padres para movimientos huevo
+select p.id,p.name,p.compatibility, m.nombre_esp 
+FROM Pokemon p, Pokemon_Movimientos pm, Pokemon_Movimientos_Huevo pmh, Movimientos m
+WHERE p.id = pm.pokemon_id
+    and m.id = pm.movimiento_id
+    and p.genderRate not in ('AlwaysFemale','Genderless')
+    and (
+        p.compatibility like '%Monster%'
+        or p.compatibility like '%Dragon%'
+        )
+    and m.id = 36
+UNION
+select p.id,p.name,p.compatibility, m.nombre_esp 
+FROM Pokemon p, Pokemon_Movimientos_Huevo pmh, Movimientos m
+WHERE p.id = pmh.pokemon_id
+    and m.id = pmh.movimiento_id
+    and p.genderRate not in ('AlwaysFemale','Genderless')
+    and (
+        p.compatibility like '%Monster%'
+        or p.compatibility like '%Dragon%'
+        )
+    and m.id = 36
+ORDER BY p.id;

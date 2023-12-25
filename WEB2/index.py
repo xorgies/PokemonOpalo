@@ -29,6 +29,7 @@ def pokemon(pokemon_id):
     dictPokemon["male"] = generosPorcentaje[0]
     dictPokemon["female"] = generosPorcentaje[1]
     dictPokemon["id"] = str(dictPokemon["id"]).zfill(3)
+    grupos_huevo = str(dictPokemon["compatibility"])
     dictPokemon["compatibility"] = str(dictPokemon["compatibility"]).split(',')
     dictHabilidades= query_db('select * from pokemon_habilidades_view where id=? order by tipo ASC',[pokemon_id])
     dictMovimientos= query_db('select * from pokemon_movimientos_view where id=? order by nivel_aprender ASC',[pokemon_id])
@@ -41,11 +42,10 @@ def pokemon(pokemon_id):
         dictEvoluciones=  get_linea_evolutiva(pokemon_id)
     dictTipos= query_db('select * from pokemon_tipos_view where id=?',[pokemon_id])
     dictEstadisticasPosicion= get_estadisticas_posicion(dictPokemon)
-    dictMovimientosHuevo= []
-    if dictPokemon['eggMoves'] is not None:
-        dictMovimientosHuevo = dictPokemon['eggMoves'].split(',')
+    dictMovimientosHuevo= query_db('select * from pokemon_movimientos_huevo_view where id=?',[pokemon_id])
+    grupos_huevo = grupos_huevo.replace("'","")
 
-    return render_template('pokemon.html', pokemon=dictPokemon, habilidades=dictHabilidades, movimientos=dictMovimientos, multievoluciones=dictMultiEvo, preevoluciones=dictPreEvoluciones, evoluciones=dictEvoluciones, tipos=dictTipos, estadisticasPosicion=dictEstadisticasPosicion, movimientosHuevo=dictMovimientosHuevo)
+    return render_template('pokemon.html', pokemon=dictPokemon, habilidades=dictHabilidades, movimientos=dictMovimientos, multievoluciones=dictMultiEvo, preevoluciones=dictPreEvoluciones, evoluciones=dictEvoluciones, tipos=dictTipos, estadisticasPosicion=dictEstadisticasPosicion, movimientosHuevo=dictMovimientosHuevo, gruposHuevo=grupos_huevo)
 
 @app.route('/group/<string:egg>')
 def egg_group(egg):
@@ -99,6 +99,36 @@ def movimiento(movimiento_id):
     dictTipos= aplanarTipos(query_db('select * from pokemon_tipos_view'))
 
     return render_template('movimiento.html', movimiento=dictMovimiento, pokemons=dictPokemonsHabilidad,tipos=dictTipos)
+
+@app.route('/movimientoHuevoPadres/<int:movimiento_id>/<string:grupos_huevo>')
+def movimientoHuevoPadre(movimiento_id,grupos_huevo):
+    tipo="Padres"
+    gruposHuevoWhere = "and ("
+    for grupo_huevo in grupos_huevo.split(","):
+        gruposHuevoWhere+="p.compatibility like '%%"+grupo_huevo+"%%' or "
+    gruposHuevoWhere = gruposHuevoWhere[:-3]
+    gruposHuevoWhere +=")"
+    lista_pokemon= query_db("""select p.id,p.name,p.compatibility, m.nombre_esp 
+                                    FROM Pokemon p, Pokemon_Movimientos pm, Movimientos m
+                                    WHERE p.id = pm.pokemon_id
+                                        and m.id = pm.movimiento_id
+                                        and p.genderRate not in ('AlwaysFemale','Genderless')
+                                """+gruposHuevoWhere+"""
+                                        and m.id = ?
+                                UNION
+                                select p.id,p.name,p.compatibility, m.nombre_esp 
+                                FROM Pokemon p, Pokemon_Movimientos_Huevo pmh, Movimientos m
+                                WHERE p.id = pmh.pokemon_id
+                                    and m.id = pmh.movimiento_id
+                                    and p.genderRate not in ('AlwaysFemale','Genderless')
+                                """+gruposHuevoWhere+"""
+                                    and m.id = ?
+                                ORDER BY p.id
+                                 """,[movimiento_id,movimiento_id])
+    lista_pokemon= cambiarFormatoId(lista_pokemon,"id")
+    dictTipos= aplanarTipos(query_db('select * from pokemon_tipos_view'))
+    #return render_template('movimientoHuevoPadres.html', pokemons=dictPokemonsPadres,tipos=dictTipos)
+    return render_template('lista_filtrada.html', lista_pokemon=lista_pokemon, titulo=tipo, tipos=dictTipos)
 
 @app.route('/encuentros')
 def encuentros():
