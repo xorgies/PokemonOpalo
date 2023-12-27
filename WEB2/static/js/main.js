@@ -19,4 +19,15 @@ $(document).ready(function () {
         return new bootstrap.Tooltip(tooltipTriggerEl)
     })
 
+    $('[data-table]').each(function(){
+        $(this).DataTable({
+            searching: $(this).data("search"),
+            ordering: $(this).data("order"),
+            paging: $(this).data("page"),
+            info: $(this).data("info"),
+            drawCallback: function(){
+                //$("img.lazy").lazyload();
+            }
+        });
+    });
 });
