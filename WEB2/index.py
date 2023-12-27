@@ -135,7 +135,7 @@ def encuentros():
     cabeceras_tabla = ['Numero', 'Imagen', 'Nombre', 'Tipos', 'Nivel minimo', 'Nivel maximo', 'Lugar de encuentro']
     print_order = [tipoCelda('id', 'texto', '', ''),
                    tipoCelda('imagen_pokemon', 'imagen', 'pokemon', ''),
-                   tipoCelda('nombre', 'texto_enlace', 'pokemon', ''),
+                   tipoCelda('name', 'texto_enlace', 'pokemon', ''),
                    tipoCelda('tipos', 'imagen', 'tipos', 'tipos'),
                    tipoCelda('nivel_min', 'texto', '', ''),
                    tipoCelda('nivel_max', 'texto', '', ''),
