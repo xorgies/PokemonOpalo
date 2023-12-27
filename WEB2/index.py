@@ -164,7 +164,6 @@ def encuentros():
                         tipos.append(tipo['nombre'])
                     pokemon['tipos'] = tipos
                     datos_encuentros[lugar].append(pokemon)
-    print(datos_encuentros['Pueblo Brisa'])
     return render_template('encuentros.html', lugares=dictLugares, cabeceras=cabeceras_tabla, datos=datos_encuentros, print_order=print_order)
 
 ###################################################################

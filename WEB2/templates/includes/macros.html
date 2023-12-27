@@ -119,7 +119,9 @@
             <a href="{{url_for('pokemon',pokemon_id=dato['id'])}}">{{ imagen(dato['id'], 'pokemon-img-tabla') }}</a>
         {% elif clasificacion['enlace'] == 'tipos' %}
             {% for tipo in dato['tipos'] %}
-                <a href="{{url_for('tipos',tipo=tipo)}}">{{ imagen(tipo, folder='tipos') }}</a>
+                <p class="no-margin">
+                    <a href="{{url_for('tipos',tipo=tipo)}}">{{ imagen(tipo, folder='tipos') }}</a>
+                </p>
             {% endfor %}
         {% else %}
             {{ imagen(dato[clasificacion['nombre']], '') }}
