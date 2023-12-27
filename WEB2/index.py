@@ -133,6 +133,13 @@ def movimientoHuevoPadre(nombre_pokemon,movimiento_id,grupos_huevo):
 def encuentros():
     dictLugares = query_db('select distinct nombre from encuentros_lugares_view')
     cabeceras_tabla = ['Numero', 'Imagen', 'Nombre', 'Tipos', 'Nivel minimo', 'Nivel maximo', 'Lugar de encuentro']
+    print_order = [tipoCelda('id', 'texto', '', ''),
+                   tipoCelda('imagen_pokemon', 'imagen', 'pokemon', ''),
+                   tipoCelda('nombre', 'texto_enlace', 'pokemon', ''),
+                   tipoCelda('tipos', 'imagen', 'tipos', 'tipos'),
+                   tipoCelda('nivel_min', 'texto', '', ''),
+                   tipoCelda('nivel_max', 'texto', '', ''),
+                   tipoCelda('lugar_aparicion', 'texto', '', '')]
     datos_encuentros = {}
     for lugar in dictLugares:
         lugar = lugar['nombre']
@@ -158,7 +165,7 @@ def encuentros():
                     pokemon['tipos'] = tipos
                     datos_encuentros[lugar].append(pokemon)
     print(datos_encuentros['Pueblo Brisa'])
-    return render_template('encuentros.html', lugares=dictLugares, cabeceras=cabeceras_tabla, datos=datos_encuentros)
+    return render_template('encuentros.html', lugares=dictLugares, cabeceras=cabeceras_tabla, datos=datos_encuentros, print_order=print_order)
 
 ###################################################################
 # DATABASE
@@ -263,6 +270,8 @@ def aplanarTipos(tipos):
 
     return tiposPokemon
 
+def tipoCelda(nombre, tipo, enlace, carpeta):
+    return {'nombre': nombre, 'tipo': tipo, 'enlace': enlace, 'carpeta': carpeta}
 ###################################################################
 # Main
 
