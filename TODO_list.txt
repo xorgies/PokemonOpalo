@@ -1,4 +1,5 @@
 General
+- crear una pagina para el encuentro que pokemons tiene
 
 movimientos_lista.html
 - hacer enlaces al detalle
@@ -9,3 +10,5 @@ movimientos_lista.html
 pokemon.html
 - bootstrap tiene clase de flex https://getbootstrap.com/docs/5.0/utilities/flex/
 - el pokemon que está mostrandose tiene enlace
+- Mostrar donde se encuentra el pokemon
+
