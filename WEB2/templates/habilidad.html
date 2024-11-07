@@ -27,7 +27,7 @@
                         {% for pokemon in pokemons %}
                             <tr>
                                 <td class="text-center">{{pokemon["pokemon_id"]}}</td>
-                                <td class="text-center"><a href="{{url_for('pokemon',pokemon_id=pokemon['pokemon_id'])}}"><img class="pokemon-img-tabla lazy" loading="lazy" src="/static/img/{{pokemon['pokemon_id']}}.png"></a></td>
+                                <td class="text-center"><a href="{{url_for('pokemon',pokemon_id=pokemon['pokemon_id'])}}"><img class="pokemon-img-tabla lazy" loading="lazy" src="/static/img/{{juegoPokemon}}/{{pokemon['pokemon_id']}}.png"></a></td>
                                 <td class="text-center"><a href="{{url_for('pokemon',pokemon_id=pokemon['pokemon_id'])}}">{{pokemon["name"]}}</a></td>
                                 <td class="text-center">
                                     {% for tipoPokemon in tipos[pokemon["pokemon_id"]] %}

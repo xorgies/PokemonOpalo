@@ -5,10 +5,11 @@ import leerMovimientos
 
 rutaTxt = "jsonTransformer/txt/"
 rutaJson = "jsonTransformer/json/"
-ficheroPokemon = "pokemon.txt"
-ficheroEncuentros = "encounters.txt"
-ficheroHabilidades = "abilities.txt"
-ficheroMovimientos = "moves.txt"
+rutaJuego = "armonia/"
+ficheroPokemon = rutaJuego+"pokemon.txt"
+ficheroEncuentros = rutaJuego+"encounters.txt"
+ficheroHabilidades = rutaJuego+"abilities.txt"
+ficheroMovimientos = rutaJuego+"moves.txt"
 
 
 print("=======================================")

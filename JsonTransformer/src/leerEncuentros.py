@@ -46,7 +46,10 @@ def leerFicheroEncuentros(ruta,nombreFichero,rutaJson):
                 if not lineaSplit[0].isdigit():
                     pokemon_id = buscarPokemonId(lineaSplit[0],pokemons)
                     nivelMin = lineaSplit[1]
-                    nivelMax = lineaSplit[2]
+                    if len(lineaSplit) > 2:
+                        nivelMax = lineaSplit[2]
+                    else:
+                        nivelMax = nivelMin
                     datos['encuentros'].append({'pokemon_id':int(pokemon_id),'nombre':nombreEncuentro,'lugar_id':lugarId,'nivel_min':int(nivelMin),'nivel_max':int(nivelMax)})
 
     with open(rutaJson+ficheroJsonEncuentros, "w",encoding='utf-8') as write_file:

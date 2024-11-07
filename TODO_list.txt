@@ -1,5 +1,5 @@
 General
-- crear una pagina para el encuentro que pokemons tiene
+- crear una pagina para el encuentro -> que pokemons tiene
 
 movimientos_lista.html
 - hacer enlaces al detalle

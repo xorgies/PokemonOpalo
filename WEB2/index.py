@@ -4,6 +4,8 @@ from flask import g
 
 app = Flask(__name__)
 
+juegoPokemon = "armonia"
+
 ###################################################################
 # rutas
 
@@ -20,7 +22,7 @@ def lista_pokemon():
     dictPokemon= query_db('select id,name from Pokemon')
     dictPokemon= cambiarFormatoId(dictPokemon,"id")
     dictTipos= aplanarTipos(query_db('select * from pokemon_tipos_view'))
-    return render_template('pokemon_lista.html', pokemon=dictPokemon, tipos=dictTipos)
+    return render_template('pokemon_lista.html', pokemon=dictPokemon, tipos=dictTipos, juegoPokemon=juegoPokemon)
 
 @app.route('/pokemon/<int:pokemon_id>')
 def pokemon(pokemon_id):
@@ -45,7 +47,7 @@ def pokemon(pokemon_id):
     dictMovimientosHuevo= query_db('select * from pokemon_movimientos_huevo_view where id=?',[pokemon_id])
     grupos_huevo = grupos_huevo.replace("'","")
 
-    return render_template('pokemon.html', pokemon=dictPokemon, habilidades=dictHabilidades, movimientos=dictMovimientos, multievoluciones=dictMultiEvo, preevoluciones=dictPreEvoluciones, evoluciones=dictEvoluciones, tipos=dictTipos, estadisticasPosicion=dictEstadisticasPosicion, movimientosHuevo=dictMovimientosHuevo, gruposHuevo=grupos_huevo)
+    return render_template('pokemon.html', pokemon=dictPokemon, habilidades=dictHabilidades, movimientos=dictMovimientos, multievoluciones=dictMultiEvo, preevoluciones=dictPreEvoluciones, evoluciones=dictEvoluciones, tipos=dictTipos, estadisticasPosicion=dictEstadisticasPosicion, movimientosHuevo=dictMovimientosHuevo, gruposHuevo=grupos_huevo, juegoPokemon=juegoPokemon)
 
 @app.route('/group/<string:egg>')
 def egg_group(egg):
@@ -54,7 +56,7 @@ def egg_group(egg):
     lista_pokemon = query_db('select id,name from Pokemon where compatibility like ?', [egg_group])
     lista_pokemon= cambiarFormatoId(lista_pokemon,"id")
     dictTipos= aplanarTipos(query_db('select * from pokemon_tipos_view'))
-    return (render_template('lista_filtrada.html', lista_pokemon=lista_pokemon, titulo=egg, tipos=dictTipos))
+    return (render_template('lista_filtrada.html', lista_pokemon=lista_pokemon, titulo=egg, tipos=dictTipos,juegoPokemon=juegoPokemon))
 
 @app.route('/tipo/<string:tipo>')
 def tipos(tipo):
@@ -70,7 +72,7 @@ def tipos(tipo):
     tipo = '<img class="img-tipo-filtrado img-center" src="/static/img/tipos/'+tipo+'_xl.png">'
     lista_pokemon= cambiarFormatoId(lista_pokemon,"id")
     dictTipos= aplanarTipos(query_db('select * from pokemon_tipos_view'))
-    return render_template('lista_filtrada.html', lista_pokemon=lista_pokemon, titulo=tipo, tipos=dictTipos)
+    return render_template('lista_filtrada.html', lista_pokemon=lista_pokemon, titulo=tipo, tipos=dictTipos,juegoPokemon=juegoPokemon)
 
 @app.route('/habilidadesLista')
 def lista_habilidades():
@@ -84,7 +86,7 @@ def habilidad(habilidad_id):
     dictPokemonsHabilidad= cambiarFormatoId(dictPokemonsHabilidad,"pokemon_id")
     dictTipos= aplanarTipos(query_db('select * from pokemon_tipos_view'))
 
-    return render_template('habilidad.html', habilidad=dictHabilidad, pokemons=dictPokemonsHabilidad,tipos=dictTipos)
+    return render_template('habilidad.html', habilidad=dictHabilidad, pokemons=dictPokemonsHabilidad,tipos=dictTipos,juegoPokemon=juegoPokemon)
 
 @app.route('/movimientosLista')
 def lista_movimientos():
@@ -98,7 +100,7 @@ def movimiento(movimiento_id):
     dictPokemonsHabilidad= cambiarFormatoId(dictPokemonsHabilidad,"pokemon_id")
     dictTipos= aplanarTipos(query_db('select * from pokemon_tipos_view'))
 
-    return render_template('movimiento.html', movimiento=dictMovimiento, pokemons=dictPokemonsHabilidad,tipos=dictTipos)
+    return render_template('movimiento.html', movimiento=dictMovimiento, pokemons=dictPokemonsHabilidad,tipos=dictTipos,juegoPokemon=juegoPokemon)
 
 @app.route('/movimientoHuevoPadres/<string:nombre_pokemon>/<int:movimiento_id>/<string:grupos_huevo>')
 def movimientoHuevoPadre(nombre_pokemon,movimiento_id,grupos_huevo):
@@ -127,7 +129,7 @@ def movimientoHuevoPadre(nombre_pokemon,movimiento_id,grupos_huevo):
                                  """,[movimiento_id,movimiento_id])
     lista_pokemon= cambiarFormatoId(lista_pokemon,"id")
     dictTipos= aplanarTipos(query_db('select * from pokemon_tipos_view'))
-    return render_template('movimientoHuevoPadres.html', lista_pokemon=lista_pokemon, titulo=tipo, tipos=dictTipos, nombrePokemon=nombre_pokemon)
+    return render_template('movimientoHuevoPadres.html', lista_pokemon=lista_pokemon, titulo=tipo, tipos=dictTipos, nombrePokemon=nombre_pokemon, juegoPokemon=juegoPokemon)
 
 @app.route('/encuentros')
 def encuentros():
@@ -164,7 +166,7 @@ def encuentros():
                         tipos.append(tipo['nombre'])
                     pokemon['tipos'] = tipos
                     datos_encuentros[lugar].append(pokemon)
-    return render_template('encuentros.html', lugares=dictLugares, cabeceras=cabeceras_tabla, datos=datos_encuentros, print_order=print_order)
+    return render_template('encuentros.html', lugares=dictLugares, cabeceras=cabeceras_tabla, datos=datos_encuentros, print_order=print_order,juegoPokemon=juegoPokemon)
 
 ###################################################################
 # DATABASE
@@ -276,7 +278,7 @@ def tipoCelda(nombre, tipo, enlace, carpeta):
 
 if __name__ == '__main__':
     # PRO
-    app.run(host='0.0.0.0')
+    #app.run(host='0.0.0.0')
 
     # Testing
-    #app.run(debug=True)
+    app.run(debug=True)

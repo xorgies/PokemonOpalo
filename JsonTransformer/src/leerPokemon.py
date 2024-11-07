@@ -72,10 +72,12 @@ def leerFicheroPokemon(ruta,nombreFichero,rutaJson):
                     valor = ""
 
                 if 'Abilities' == nombre:
-                    habilidadesSplit = valor.split(',')
-                    for habilidad in habilidadesSplit:
-                        habilidadId = buscarIdHabilidad(dictHabilidades,habilidad)
-                        habilidades_pokemon['habilidades'].append({'pokemon_id':pokemon_id,'habilidad_id':int(habilidadId),'tipo':'normal'})
+                    print("valor: '"+valor+"'")
+                    if valor != "":
+                        habilidadesSplit = valor.split(',')
+                        for habilidad in habilidadesSplit:
+                            habilidadId = buscarIdHabilidad(dictHabilidades,habilidad)
+                            habilidades_pokemon['habilidades'].append({'pokemon_id':pokemon_id,'habilidad_id':int(habilidadId),'tipo':'normal'})
                 elif 'HiddenAbility' == nombre:
                     habilidadId = buscarIdHabilidad(dictHabilidades,valor)
                     habilidades_pokemon['habilidades'].append({'pokemon_id':pokemon_id,'habilidad_id':int(habilidadId),'tipo':'oculta'})
