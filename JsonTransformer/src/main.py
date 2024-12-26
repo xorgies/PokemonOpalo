@@ -5,7 +5,7 @@ import leerMovimientos
 
 rutaTxt = "jsonTransformer/txt/"
 rutaJson = "jsonTransformer/json/"
-rutaJuego = "armonia/"
+rutaJuego = "hispalis/"
 ficheroPokemon = rutaJuego+"pokemon.txt"
 ficheroEncuentros = rutaJuego+"encounters.txt"
 ficheroHabilidades = rutaJuego+"abilities.txt"

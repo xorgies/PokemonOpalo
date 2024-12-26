@@ -79,8 +79,15 @@ def leerFicheroPokemon(ruta,nombreFichero,rutaJson):
                             habilidadId = buscarIdHabilidad(dictHabilidades,habilidad)
                             habilidades_pokemon['habilidades'].append({'pokemon_id':pokemon_id,'habilidad_id':int(habilidadId),'tipo':'normal'})
                 elif 'HiddenAbility' == nombre:
-                    habilidadId = buscarIdHabilidad(dictHabilidades,valor)
-                    habilidades_pokemon['habilidades'].append({'pokemon_id':pokemon_id,'habilidad_id':int(habilidadId),'tipo':'oculta'})
+                    if valor != "":
+                        habilidadesSplit = valor.split(',')
+                        for habilidad in habilidadesSplit:
+                            habilidadId = buscarIdHabilidad(dictHabilidades,habilidad)
+                            habilidades_pokemon['habilidades'].append({'pokemon_id':pokemon_id,'habilidad_id':int(habilidadId),'tipo':'oculta'})
+
+                    #habilidadId = buscarIdHabilidad(dictHabilidades,valor)
+                    #print("habilidadId: '"+valor+"'")
+                    #habilidades_pokemon['habilidades'].append({'pokemon_id':pokemon_id,'habilidad_id':int(habilidadId),'tipo':'oculta'})
                 elif 'BaseStats' == nombre:
                     baseStatsSplit = valor.split(',')
                     estadisticas_pokemon['estadisticas'].append({'pokemon_id':pokemon_id,'ps':baseStatsSplit[0],'atk':baseStatsSplit[1],'def':baseStatsSplit[2],'spd':baseStatsSplit[3],'atk_sp':baseStatsSplit[4],'def_sp':baseStatsSplit[5]})

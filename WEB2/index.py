@@ -4,7 +4,7 @@ from flask import g
 
 app = Flask(__name__)
 
-juegoPokemon = "armonia"
+juegoPokemon = "hispalis"
 
 ###################################################################
 # rutas
@@ -278,7 +278,7 @@ def tipoCelda(nombre, tipo, enlace, carpeta):
 
 if __name__ == '__main__':
     # PRO
-    app.run(host='0.0.0.0')
+    #app.run(host='0.0.0.0')
 
     # Testing
-    #app.run(debug=True)
+    app.run(debug=True)
