@@ -1,4 +1,4 @@
 @echo off
-python JsonTransformer/src/main.py
-python BD/src/main.py
+py JsonTransformer/src/main.py
+py BD/src/main.py
 pause
